@@ -27,7 +27,7 @@ const options: ConnectOptions = {
 export default async function connectToDB(): Promise<mongoose.Connection> {
   try {
     set("strictQuery", false);
-    const db = await connect(MONGO_DB_URI, options);
+    const db = await connect(MONGO_DB_URI!, options);
 
     console.log("MongoDB connected to", db.connection.name);
 
