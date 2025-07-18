@@ -9,7 +9,8 @@ import { serializeRealEstateLead } from "./real-estate-lead.serializer";
  * @returns {object} - Serialized list object with leads.
  */
 
-export const serializeRealEstateLeadList = (doc: IRealEstateLeadListDocument) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const serializeRealEstateLeadList = (doc: any) => {
     return {
         _id: doc._id.toString(),
         name: doc.name,
@@ -17,5 +18,5 @@ export const serializeRealEstateLeadList = (doc: IRealEstateLeadListDocument) =>
         createdAt: doc.createdAt,
         updatedAt: doc.updatedAt,
         leadIds: (doc.leadIds || []).map(serializeRealEstateLead),
-    } as IRealEstateLeadListDocument;
+    } ;
 };

@@ -1,7 +1,7 @@
 "use server";
 
 import connectToDB from "@/_database/connect-to-db.database";
-import { IRealEstateLeadListDocument, RealEstateLeadListModel } from "@/_database/models/leads/list.model";
+import { RealEstateLeadListModel } from "@/_database/models/leads/list.model";
 import { serializeRealEstateLeadList } from "@/_utility/helpers/real-estate-lead-list.serializer";
 
 /**
@@ -10,13 +10,14 @@ import { serializeRealEstateLeadList } from "@/_utility/helpers/real-estate-lead
  * @returns {Promise<{ success: true; data: any[] } | { success: false; error: unknown }>}
  */
 export const getAllLists = async (): Promise<
-    | { success: true; data: IRealEstateLeadListDocument[] }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    | { success: true; data: any[] }
     | { success: false; error: unknown }
 > => {
     try {
         await connectToDB();
-
-        const rawLists = await RealEstateLeadListModel.find();
+        
+        const rawLists = await RealEstateLeadListModel.find().lean().populate("leadIds");
 
         const lists = rawLists.map(serializeRealEstateLeadList);
 

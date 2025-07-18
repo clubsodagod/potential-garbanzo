@@ -25,12 +25,15 @@ import LeadListsPermanent from "./lead-lists/LeadsListPermanent";
 const LeadFlowHomeModule: React.FC = () => {
     const [leadLists, setLeadLists] = useState<IRealEstateLeadListDocument[] | null>(null);
     const [selectedListIndex, setSelectedListIndex] = useState<number | null>(null);
+    const [selectedList, setSelectedList] = useState<IRealEstateLeadListDocument | null>(null);
+
     const [mobileOpen, setMobileOpen] = useState(false);
 
     /**
-     * Fetches all lead lists from the database.
+     * Fetches all lead lists from the database and updates state.
+     * Logs an error if the fetch fails.
      */
-    const refreshLists = async () => {
+    const refreshLists = async (): Promise<void> => {
         const response = await getAllLists();
         if (response.success) {
             setLeadLists(response.data);
@@ -39,28 +42,42 @@ const LeadFlowHomeModule: React.FC = () => {
         }
     };
 
+    /**
+     * Triggers initial lead list fetch on component mount.
+     */
     useEffect(() => {
         refreshLists();
     }, []);
 
     /**
-     * Toggles the mobile drawer (sidebar) for viewing lead lists.
+     * Updates selectedList state whenever selectedListIndex or leadLists change.
      */
-    const handleDrawerToggle = () => {
+    useEffect(() => {
+        if (
+            selectedListIndex !== null &&
+            leadLists &&
+            leadLists[selectedListIndex]
+        ) {
+            setSelectedList(leadLists[selectedListIndex]);
+        } else {
+            setSelectedList(null);
+        }
+    }, [selectedListIndex, leadLists]);
+
+    /**
+     * Toggles the mobile drawer open/close state.
+     */
+    const handleDrawerToggle = (): void => {
         setMobileOpen((prev) => !prev);
     };
 
     /**
-     * Handles request from Navbar to create a new list.
-     * For now, just opens the drawer to start uploading.
+     * Clears the selected list and prompts drawer open for new list upload.
      */
-    const handleAddNewList = () => {
-        setSelectedListIndex(null); // Reset selection
-        setMobileOpen(false); // Prompt user to upload
+    const handleAddNewList = (): void => {
+        setSelectedListIndex(null);
+        setMobileOpen(false);
     };
-
-    const selectedList =
-        selectedListIndex !== null && leadLists ? leadLists[selectedListIndex] : null;
 
     return (
         <main

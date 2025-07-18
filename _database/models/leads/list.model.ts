@@ -10,6 +10,14 @@ export interface IRealEstateLeadList extends Document {
     updatedAt: Date;
 }
 export interface IRealEstateLeadListDocument {
+    _id:mongoose.Types.ObjectId;
+    name: string;
+    description?: string;
+    leadIds: RealEstateLead[];
+    createdAt: Date;
+    updatedAt: Date;
+}
+export interface IRealEstateLeadListDocumentV2 {
     _id:string;
     name: string;
     description?: string;

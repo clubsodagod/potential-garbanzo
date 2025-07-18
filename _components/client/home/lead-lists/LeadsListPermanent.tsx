@@ -88,7 +88,7 @@ const LeadListsPermanent: React.FC<LeadListsPermanentProps> = ({
                 >
                     {leadLists && leadLists.length > 0 ? (
                         leadLists.map((list, index) => (
-                            <ListItem key={list._id} disablePadding>
+                            <ListItem key={`${list._id}`} disablePadding>
                                 <ListItemButton
                                     selected={selectedListIndex === index}
                                     onClick={() => handleSelect(index)}
