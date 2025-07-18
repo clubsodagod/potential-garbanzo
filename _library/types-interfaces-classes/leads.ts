@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import { IUser } from "@/_database/models/user.model";
+import mongoose, {Document} from "mongoose";
 
 export type LeadType = 'preforeclosure' | 'vacantDistressedProperty';
 
@@ -28,11 +29,11 @@ export interface ILoanInfo {
     loanEstBalance?: number;
     loanEstPayment?: number;
     loanEstInterestRate?: number;
-    loanRecordingDate?: Date;
+    loanRecordingDate?: Date|string;
     loanType?: string;
     loanAmount?: number;
     loanLenderName?: string;
-    loanDueDate?: Date;
+    loanDueDate?: Date|string;
     loanTermMonths?: number;
     totalLoanBalance?: number;
 }
@@ -40,9 +41,9 @@ export interface ILoanInfo {
 export interface IForeclosureInfo {
     documentType?: string;
     status?: string;
-    auctionDate?: Date;
-    defaultDate?: Date;
-    recordingDate?: Date;
+    auctionDate?: Date|string;
+    defaultDate?: Date|string;
+    recordingDate?: Date|string;
     caseNumber?: string;
     trusteeOrAttorney?: string;
 }
@@ -53,6 +54,31 @@ export interface IInvestmentHighlight {
 }
 
 export interface IRealEstateLead {
+    _id?:string;
+    leadType: LeadType;
+    leadStatus: string;
+    batchrankScoreCategory?: string;
+    property: IProperty;
+    owner: IOwnerContact[];
+    loanInfo?: ILoanInfo;
+    foreclosureInfo?: IForeclosureInfo;
+    investmentHighlight?: IInvestmentHighlight;
+    createdAt?: Date|string;
+    updatedAt?: Date|string;
+}
+export interface RealEstateLeadDocument {
+    leadType: LeadType;
+    leadStatus: string;
+    batchrankScoreCategory?: string;
+    property: IProperty;
+    owner: IOwnerContact[];
+    loanInfo?: ILoanInfo;
+    foreclosureInfo?: IForeclosureInfo;
+    investmentHighlight?: IInvestmentHighlight;
+    createdAt?: Date|string;
+    updatedAt?: Date|string;
+}
+export interface IRealEstateLeadDocument extends Document {
     leadType: LeadType;
     leadStatus: string;
     batchrankScoreCategory?: string;
@@ -80,4 +106,28 @@ export interface ILeadRecord {
     metadata?: Record<string, unknown>;        
     createdAt?: Date;
     updatedAt?: Date;
+}
+export interface ICleanLeadRecord {
+    _id?:string;
+    userId: string;               
+    actionType: LeadActionType;
+    timestamp: string;
+    note?: string;
+    callCount?: number;
+    leadSnapshot: IRealEstateLead;         
+    metadata?: Record<string, unknown>;        
+    createdAt?: string;
+    updatedAt?: string;
+}
+
+
+
+export interface LeadInteractionPayload {
+  leadId: string;
+  user: IUser;
+  actionType: LeadActionType;
+  note?: string;
+  metadata?: Record<string, unknown>;
+  callCount?: number;
+  timestamp?: Date;
 }

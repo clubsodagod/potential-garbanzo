@@ -1,50 +1,148 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏡 Lead Flow — Real Estate Lead Management Platform
 
-## Getting Started
+**Lead Flow** is a modern, full-stack real estate lead management system built with Next.js, MongoDB, and TypeScript. It empowers real estate investors, acquisition teams, and lead managers to efficiently upload, organize, contact, and track interactions with off-market property leads.
 
-First, run the development server:
+---
+
+## 🚀 Features
+
+- 🗂️ **Lead List Management** — Upload and categorize Excel files with property lead data
+- 👥 **Contact Intelligence** — View owners, phone numbers, emails, and property details
+- 📞 **Action Logging** — Record calls, texts, emails, and notes with full history timeline
+- 🔁 **Multi-step Forms** — Clean, validated user onboarding with authentication
+- 📊 **Interaction History** — Visual logs of communications for accountability and insights
+- 🔐 **Role-based Access** — Session-aware, permission-ready with NextAuth
+- 🎨 **Responsive UI** — Built with Material UI (MUI) and Lottie animations
+
+---
+
+## 🧑‍💻 Getting Started
+
+To start the development server locally:
 
 ```bash
+npm install
 npm run dev
-# or
+
+Or with your preferred package manager:
+
+# yarn
+yarn install
 yarn dev
-# or
+
+# pnpm
+pnpm install
 pnpm dev
-# or
+
+# bun
+bun install
 bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+🛠 Tech Stack
+Framework: Next.js 15 (App Router)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Language: TypeScript
 
-## Learn More
+Database: MongoDB + Mongoose
 
-To learn more about Next.js, take a look at the following resources:
+UI: Material UI (MUI)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Auth: NextAuth (Credentials Provider)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+State & Forms: React Hook Form
 
-## Deploy on Vercel
+Notifications: react-hot-toast
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Styling: Tailwind + MUI
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+File Parsing: XLSX → Custom parser to structured lead schema
 
-## Environment Variables
+Animations: Lottie (.lottie format)
 
-Create a `.env` file in the project root and define the following variables so the database connection can be established securely:
+📁 Environment Variables
+Create a .env file in the root of your project and add the following:
 
-```bash
-MONGODB_URI=<mongodb connection string>
-MONGODB_USER=<username>
-MONGODB_PASS=<password>
-MONGODB_DB_NAME=<database name>
+env
+Copy
+Edit
+# MongoDB
+MONGODB_URI=mongodb+srv://...
+MONGODB_USER=your_user
+MONGODB_PASS=your_pass
+MONGODB_DB_NAME=the-lead-flow
 MONGODB_AUTH_SOURCE=admin
 MONGODB_SOCKET_TIMEOUT_MS=30000
 MONGODB_SERVER_SELECTION_TIMEOUT_MS=5000
-```
+
+# Auth
+AUTH_GOOGLE_ID=...
+AUTH_GOOGLE_SECRET=...
+
+# App URLs
+NEXT_PUBLIC_DEVELOPMENT_URL=http://localhost:3000
+NEXT_PUBLIC_PRODUCTION_URL=https://your-domain.com
+NEXT_PUBLIC_DEVELOPMENT_API_URL=http://localhost:3000/api
+NEXT_PUBLIC_PRODUCTION_API_URL=https://your-domain.com/api
+📦 Project Structure
+bash
+Copy
+Edit
+/_database/             # Mongoose models and DB connection
+/_library/              # Constants, types, themes, utilities
+/_utility/              # Fetchers, form helpers, serializers
+/app/                   # App Router structure (routes, modules)
+  |_ login/
+  |_ register/
+  |_ dashboard/
+  |_ leads/
+🌍 Deployment
+We recommend deploying with Vercel, the creators of Next.js.
+
+bash
+Copy
+Edit
+# Connect your Git repo to Vercel
+# Add environment variables in Vercel dashboard
+# Push to `main` or create a PR to trigger deployment
+For detailed instructions, refer to:
+👉 Next.js deployment docs
+
+🤝 Contributing
+Contributions, issue reports, and feature requests are welcome!
+
+To get started:
+
+bash
+Copy
+Edit
+# Fork this repo
+# Create a new feature branch
+git checkout -b feature/your-feature-name
+
+# Push changes and open a PR
+git commit -m "✨ Add awesome feature"
+git push origin feature/your-feature-name
+📬 Contact
+Have questions or want to partner with us?
+
+📧 Email: self@maliek-davis.com
+🌐 Website: https://maliek-davis.com
+
+© License
+This project is licensed under the MIT License.
+
+yaml
+Copy
+Edit
+
+---
+
+Let me know if you'd like:
+
+- A clickable **table of contents**
+- Deployment instructions for **Docker**
+- Dynamic badges for CI/CD, license, or Vercel status
+- Project screenshots or animated walkthroughs
+
+Would you like this saved as a `README.md` file now?
