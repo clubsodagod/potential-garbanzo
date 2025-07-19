@@ -78,7 +78,7 @@ const Navbar: React.FC<NavbarProps> = ({
                     <Image
                         src={logoMain}
                         alt="Logo"
-                        width={75}
+                        width={175}
                         height={40}
                         priority
                     />

@@ -85,9 +85,8 @@ const LeadLists: React.FC<LeadListsProps> = ({
                 "& .MuiDrawer-paper": {
                     boxSizing: "border-box",
                     width: drawerWidth,
-                    backgroundColor:
-                        theme.palette.mode === "dark" ? "#FAFAFAe9" : "#232323e9",
-                    color: theme.palette.mode === "dark" ? "#232323" : "#FAFAFA",
+                    backgroundColor:"#FAFAFAe9",
+                    color: "#232323",
                 },
                 "& .MuiBackdrop-root": {
                     backdropFilter: "blur(2.5px)",
@@ -103,7 +102,7 @@ const LeadLists: React.FC<LeadListsProps> = ({
                         height={16}
                         sizes="100vw"
                         style={{ objectFit: "contain" }}
-                        className="w-[125px] h-[75px] mx-auto"
+                        className="w-[175px] h-fit mx-auto"
                     />
                 </div>
 

@@ -56,9 +56,8 @@ const LeadListsPermanent: React.FC<LeadListsPermanentProps> = ({
                 "& .MuiDrawer-paper": {
                     width: drawerWidth,
                     boxSizing: "border-box",
-                    backgroundColor:
-                        theme.palette.mode === "dark" ? "#FAFAFAe9" : "#232323e9",
-                    color: theme.palette.mode === "dark" ? "#232323" : "#FAFAFA",
+                    backgroundColor:"#FAFAFAe9",
+                    color: "#232323",
                     borderRight: "none",
                 },
             })}
@@ -73,7 +72,7 @@ const LeadListsPermanent: React.FC<LeadListsPermanentProps> = ({
                         height={16}
                         sizes="100vw"
                         style={{ objectFit: "contain" }}
-                        className="w-[125px] h-[75px] mx-auto"
+                        className="w-[175px] h-fit mx-auto"
                     />
                 </Box>
 
