@@ -13,6 +13,7 @@ import {
     Button,
     Divider,
 } from "@mui/material";
+import { orange } from "@mui/material/colors";
 import Image from "next/image";
 import React from "react";
 
@@ -140,7 +141,10 @@ const LeadLists: React.FC<LeadListsProps> = ({
                     <Button
                         fullWidth
                         variant="contained"
-                        color="primary"
+                        color={"warning"}
+                        sx={{
+                            bgcolor:orange[600]
+                        }}
                         onClick={() => {
                             onAddNewList();
                         }}

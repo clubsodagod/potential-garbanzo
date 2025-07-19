@@ -14,6 +14,7 @@ import {
     Divider,
     Box,
 } from "@mui/material";
+import { orange } from "@mui/material/colors";
 import Image from "next/image";
 import React from "react";
 
@@ -117,7 +118,9 @@ const LeadListsPermanent: React.FC<LeadListsPermanentProps> = ({
                     <Button
                         fullWidth
                         variant="contained"
-                        color="primary"
+                        sx={{
+                            bgcolor:orange[600]
+                        }}
                         onClick={onAddNewList}
                     >
                         + Add New List
