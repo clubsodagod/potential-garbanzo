@@ -8,6 +8,7 @@ import LeadLists from "./lead-lists/LeadLists";
 import { getAllLists } from "@/_utility/fetchers/leads/get-all-lists.fetcher";
 import { IRealEstateLeadListDocument } from "@/_database/models/leads/list.model";
 import LeadListsPermanent from "./lead-lists/LeadsListPermanent";
+import { InteractionSummary, summarizeInteractions } from "@/_utility/helpers/interaction-summary.helper";
 
 /**
  * LeadFlowHomeModule
@@ -26,6 +27,9 @@ const LeadFlowHomeModule: React.FC = () => {
     const [leadLists, setLeadLists] = useState<IRealEstateLeadListDocument[] | null>(null);
     const [selectedListIndex, setSelectedListIndex] = useState<number | null>(null);
     const [selectedList, setSelectedList] = useState<IRealEstateLeadListDocument | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [summary, setSummary] = useState<InteractionSummary>({ callCount: 0, textCount: 0, emailCount: 0, noteCount: 0 });
+
 
     const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -34,9 +38,15 @@ const LeadFlowHomeModule: React.FC = () => {
      * Logs an error if the fetch fails.
      */
     const refreshLists = async (): Promise<void> => {
+            setLoading(!loading);
         const response = await getAllLists();
         if (response.success) {
             setLeadLists(response.data);
+            //     setLoading(false);
+
+            setTimeout(()=> {
+                setLoading(false);
+            }, 3000)
         } else {
             console.error("Failed to fetch lead lists:", response.error);
         }
@@ -59,6 +69,9 @@ const LeadFlowHomeModule: React.FC = () => {
             leadLists[selectedListIndex]
         ) {
             setSelectedList(leadLists[selectedListIndex]);
+                        setSummary(summarizeInteractions(
+                leadLists[selectedListIndex].leadIds.flatMap(lead => lead.leadInteractionHistory ?? [])
+            ));
         } else {
             setSelectedList(null);
         }
@@ -87,7 +100,9 @@ const LeadFlowHomeModule: React.FC = () => {
                 className="flex h-full"
             >
 
-                <div>
+                <div
+                className="md:w-[340px]"
+                >
                     {/* Lead List Drawer for mobile */}
                     <LeadListsPermanent
                         leadLists={leadLists}
@@ -98,7 +113,7 @@ const LeadFlowHomeModule: React.FC = () => {
                 </div>
 
                 <div
-                    className="w-full h-screen flex flex-col"
+                    className="w-full md:w-full overflow-x-clip  h-screen flex flex-col"
                 >
 
                     {/* Top Navbar */}
@@ -116,7 +131,7 @@ const LeadFlowHomeModule: React.FC = () => {
                         {
                             selectedListIndex !== null && (
                                 <section className="flex-1">
-                                    <CallList callList={selectedList} />
+                                    <CallList callList={selectedList} summary={summary} isLoading={loading} />
                                 </section>
                             )
                         }
@@ -125,7 +140,7 @@ const LeadFlowHomeModule: React.FC = () => {
                         {/* Upload Section */}
                         {
                             selectedListIndex === null && (
-                                <section className="w-full md:max-w-sm">
+                                <section className=" md:max-w-sm">
                                     <ListLoader refreshLists={refreshLists} />
                                 </section>
                             )

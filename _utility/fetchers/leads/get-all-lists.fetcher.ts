@@ -16,10 +16,21 @@ export const getAllLists = async (): Promise<
 > => {
     try {
         await connectToDB();
-        
-        const rawLists = await RealEstateLeadListModel.find().lean().populate("leadIds");
 
+        const rawLists = await RealEstateLeadListModel.find()
+            .populate({
+                path: "leadIds",
+                populate: {
+                    path: "leadInteractionHistory",
+                    model: "LeadRecord", // or the actual model name used
+                },
+            })
+            .lean().exec();
+
+            console.log(rawLists[0].leadIds[0].leadInteractionHistory);
+            
         const lists = rawLists.map(serializeRealEstateLeadList);
+        console.log(lists[0].leadIds[0]);
 
         return { success: true, data: lists };
     } catch (error: unknown) {

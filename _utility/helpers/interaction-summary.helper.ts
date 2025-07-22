@@ -1,5 +1,5 @@
 import { LeadRecordDocument } from "@/_database/models/leads/real-estate-lead-record.model";
-import { ICleanLeadRecord } from "@/_library/types-interfaces-classes/leads";
+import { ICleanLeadRecord, RealEstateLeadDocument } from "@/_library/types-interfaces-classes/leads";
 
 export interface InteractionSummary {
     callCount: number;
@@ -14,7 +14,7 @@ export interface InteractionSummary {
  * @param records - Array of lead interaction records
  * @returns InteractionSummary - Count of each interaction type
  */
-export function summarizeInteractions(records: ICleanLeadRecord[]): InteractionSummary {
+export function summarizeInteractions(records: LeadRecordDocument[]): InteractionSummary {
     const summary: InteractionSummary = {
         callCount: 0,
         emailCount: 0,
@@ -23,7 +23,6 @@ export function summarizeInteractions(records: ICleanLeadRecord[]): InteractionS
     };
 
     for (const record of records) {
-                console.log(record.actionType);
         switch (record.actionType) {
             case "call":
                 

@@ -1,6 +1,6 @@
 
+import { IRealEstateLead, IRealEstateLeadDocument, RealEstateLeadDocument } from '@/_library/types-interfaces-classes/leads';
 import mongoose, { Schema, model, models, Document } from 'mongoose';
-import { RealEstateLead } from './real-estate.model';
 
 export interface IRealEstateLeadList extends Document {
     name: string;
@@ -13,7 +13,7 @@ export interface IRealEstateLeadListDocument {
     _id:mongoose.Types.ObjectId;
     name: string;
     description?: string;
-    leadIds: RealEstateLead[];
+    leadIds: IRealEstateLeadDocument[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -21,7 +21,7 @@ export interface IRealEstateLeadListDocumentV2 {
     _id:string;
     name: string;
     description?: string;
-    leadIds: RealEstateLead[];
+    leadIds: IRealEstateLead[];
     createdAt: Date;
     updatedAt: Date;
 }

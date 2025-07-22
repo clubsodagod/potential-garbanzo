@@ -75,7 +75,7 @@ const LeadLists: React.FC<LeadListsProps> = ({
             variant="temporary"
             open={mobileOpen}
             onClose={handleDrawerToggle}
-            sx={(theme) => ({
+            sx={{
                 width: drawerWidth,
                 flexShrink: 0,
                 display: {
@@ -85,13 +85,13 @@ const LeadLists: React.FC<LeadListsProps> = ({
                 "& .MuiDrawer-paper": {
                     boxSizing: "border-box",
                     width: drawerWidth,
-                    backgroundColor:"#FAFAFAe9",
+                    backgroundColor: "#FAFAFAe9",
                     color: "#232323",
                 },
                 "& .MuiBackdrop-root": {
                     backdropFilter: "blur(2.5px)",
                 },
-            })}
+            }}
         >
             <div className="lead-lists-wrapper flex flex-col h-full">
                 <div className="img-wrapper py-4">
@@ -119,21 +119,27 @@ const LeadLists: React.FC<LeadListsProps> = ({
                                     <ListItemText
                                         primary={list.name}
                                         slotProps={{
-                                            primary:{
+                                            primary: {
                                                 fontSize: 14,
-                                            fontWeight: 500,
-                                            noWrap: true,
-                                            }
+                                                fontWeight: 500,
+                                                noWrap: true,
+                                            },
                                         }}
                                     />
                                 </ListItemButton>
                             </ListItem>
                         ))
                     ) : (
-                        <div className="px-4 py-2">
-                            <Typography variant="body2">Loading Lists...</Typography>
+                        <div className="px-4 py-3 text-center">
+                            <Typography variant="subtitle2" gutterBottom>
+                                No Lists Yet
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component={"p"}>
+                                Start by adding your first lead list. Once uploaded, you&apos;ll be able to view and manage your leads here.
+                            </Typography>
                         </div>
                     )}
+
                 </List>
 
                 <div className="mt-auto p-4">
@@ -142,7 +148,7 @@ const LeadLists: React.FC<LeadListsProps> = ({
                         variant="contained"
                         color={"warning"}
                         sx={{
-                            bgcolor:orange[600]
+                            bgcolor: orange[600]
                         }}
                         onClick={() => {
                             onAddNewList();

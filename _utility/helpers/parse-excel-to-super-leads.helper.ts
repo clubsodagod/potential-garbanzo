@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IRealEstateLead, LeadType } from '@/_library/types-interfaces-classes/leads';
 import * as XLSX from 'xlsx';
 
@@ -17,6 +18,8 @@ import * as XLSX from 'xlsx';
  * @example
  * const leads = await parseExcelToSuperLeads(fileInput.files[0], LeadType.PREFORECLOSURE);
  */
+
+
 export const parseExcelToSuperLeads = async (
     file: File,
     leadType: LeadType
@@ -24,7 +27,6 @@ export const parseExcelToSuperLeads = async (
     const data = await file.arrayBuffer();
     const workbook = XLSX.read(data);
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const rows: Record<string, any>[] = XLSX.utils.sheet_to_json(sheet);
 
     const leads: IRealEstateLead[] = rows.map((row) => {
@@ -44,15 +46,13 @@ export const parseExcelToSuperLeads = async (
                 emails: [row['Email'], row['Email 2']].filter(Boolean),
             },
             ...(row['Owner 2 First Name'] || row['Owner 2 Last Name']
-                ? [
-                    {
-                        firstName: row['Owner 2 First Name'],
-                        lastName: row['Owner 2 Last Name'],
-                        phones: [],
-                        emails: [],
-                    },
-                ]
-                : []),
+                ? [{
+                    firstName: row['Owner 2 First Name'],
+                    lastName: row['Owner 2 Last Name'],
+                    phones: [],
+                    emails: [],
+                }]
+                : [])
         ];
 
         const lead: IRealEstateLead = {
@@ -71,6 +71,14 @@ export const parseExcelToSuperLeads = async (
                 yearBuilt: row['Year Built'],
                 estimatedValue: row['Estimated Value'],
                 arv: row['ARV'],
+                lotSizeSqFt: row['Lot Size Square Feet'],
+                totalAssessedValue: row['Total Assessed Value'],
+                zoningCode: row['Zoning Code'],
+                lastSaleDate: row['Last Sale Date'] ? new Date(row['Last Sale Date']) : undefined,
+                lastSalePrice: row['Last Sale Price'],
+                mlsStatus: row['Mls Status'],
+                mlsListingDate: row['Mls Listing Date'] ? new Date(row['Mls Listing Date']) : undefined,
+                mlsListingAmount: row['Mls Listing Amount'],
             },
             owner,
             loanInfo: {
@@ -84,6 +92,7 @@ export const parseExcelToSuperLeads = async (
                 loanDueDate: row['Loan Due Date'] ? new Date(row['Loan Due Date']) : undefined,
                 loanTermMonths: row['Loan Term (Months)'],
                 totalLoanBalance: row['Total Loan Balance'],
+                ltvCurrentEstimatedCombined: row['Ltv Current Estimated Combined'],
             },
             foreclosureInfo: {
                 documentType: row['Foreclosure Document Type'],
@@ -97,8 +106,42 @@ export const parseExcelToSuperLeads = async (
             investmentHighlight: {
                 equityCurrentEstimatedBalance: row['Equity Current Estimated Balance'],
                 notes: row['Notes'],
+                spread: row['Spread'],
+                percentARV: row['% ARV'],
+                tagNames: row['Tag Names'],
             },
-            leadType, // Injected from function argument
+            mailingInfo: {
+                address: row['Mailing Address'],
+                city: row['Mailing City'],
+                state: row['Mailing State'],
+                zip: row['Mailing Zip'],
+                county: row['Mailing County'],
+                isMailingVacant: row['Is Mailing Vacant'] === 'Yes',
+                isVacant: row['Is Vacant'] === 'Yes',
+                isLitigator: row['Litigator'] === 'Yes',
+                optOut: row['Opt-Out'] === 'Yes',
+            },
+            metadata: {
+                createdDate: row['Created Date'] ? new Date(row['Created Date']) : undefined,
+                updatedDate: row['Updated Date'] ? new Date(row['Updated Date']) : undefined,
+                parcelCount: row['Parcel Count'],
+                propertyTypeDetail: row['Property Type Detail'],
+                ownerOccupied: row['Owner Occupied'] === 'Yes',
+                mlsAgent: {
+                    fullName: row['Mls Listing Agent Fullname'],
+                    phone: row['Mls Agent Primary Phone'],
+                    email: row['Mls Agent Email'],
+                    brokerageName: row['Mls Agent Brokerage Name'],
+                    brokeragePhone: row['Mls Agent Brokerage Phone'],
+                },
+                listCount: row['List Count'],
+                mailerCount: row['Mailer Count'],
+                selfManaged: row['Self Managed'] === 'Yes',
+                pushedToBatchDialer: row['Pushed to BatchDialer'] === 'Yes',
+                office: row['Office'],
+            },
+            leadType,
+            additionalData: {},
         };
 
         return lead;

@@ -1,28 +1,42 @@
-import { IRealEstateLeadListDocumentV2 } from "@/_database/models/leads/list.model";
-import { RealEstateLead } from "@/_database/models/leads/real-estate.model";
-import { IRealEstateLead, RealEstateLeadDocument } from "@/_library/types-interfaces-classes/leads";
+import { IRealEstateLeadDocument, IRELead } from "@/_library/types-interfaces-classes/leads";
+
 
 /**
- * Serializes a raw MongoDB document (from `.lean()`) into a typed IRealEstateLead.
- * This ensures type safety and strips out any extra internal MongoDB fields like `__v`.
+ * Serializes a raw MongoDB document (from `.lean()` or `.find()`) into a typed `IRELead`.
+ * This ensures type safety and strips out internal MongoDB fields like `__v`.
  *
- * @param {any} doc - The raw MongoDB object from `.lean()`.
- * @returns {IRealEstateLead} - A validated and typed real estate lead object.
+ * @param {IRealEstateLeadDocument} doc - The raw MongoDB document.
+ * @returns {IRELead} - A validated and typed real estate lead object.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const serializeRealEstateLead = (doc: RealEstateLead): IRealEstateLead => {
-    
+export const serializeRealEstateLead = (doc: IRealEstateLeadDocument): IRELead => {
     return {
-        _id:doc._id?.toString()||"",
+        _id: doc._id?.toString() || "",
         leadType: doc.leadType,
         leadStatus: doc.leadStatus,
         batchrankScoreCategory: doc.batchrankScoreCategory,
-        property: doc.property,
-        owner: doc.owner,
+
+        property: { ...doc.property },
+        owner: [...doc.owner],
         loanInfo: doc.loanInfo,
         foreclosureInfo: doc.foreclosureInfo,
         investmentHighlight: doc.investmentHighlight,
-        // You can optionally spread only necessary timestamps:
+        mailingInfo: doc.mailingInfo,
+        metadata: doc.metadata,
+
+        leadInteractionHistory: doc.leadInteractionHistory?.map((entry) => ({
+            _id: entry._id?.toString(),
+            userId: entry.userId?.toString?.() ?? "",
+            actionType: entry.actionType,
+            note: entry.note,
+            callCount: entry.callCount,
+            leadSnapshot:entry.leadSnapshot.toString(),
+            timestamp: entry.timestamp.toString(),
+            metadata: entry.metadata,
+            createdAt: entry.createdAt instanceof Date ? entry.createdAt.toISOString() : entry.createdAt,
+            updatedAt: entry.updatedAt instanceof Date ? entry.updatedAt.toISOString() : entry.updatedAt,
+        })) ?? [],
+
+        additionalData: doc.additionalData,
         createdAt: doc.createdAt,
         updatedAt: doc.updatedAt,
     };

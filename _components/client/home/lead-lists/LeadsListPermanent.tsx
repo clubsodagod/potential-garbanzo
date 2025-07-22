@@ -18,7 +18,7 @@ import { orange } from "@mui/material/colors";
 import Image from "next/image";
 import React from "react";
 
-const drawerWidth = 240;
+const drawerWidth = 340;
 
 interface LeadListsPermanentProps {
     leadLists: IRealEstateLeadListDocument[] | null;
@@ -56,7 +56,7 @@ const LeadListsPermanent: React.FC<LeadListsPermanentProps> = ({
                 "& .MuiDrawer-paper": {
                     width: drawerWidth,
                     boxSizing: "border-box",
-                    backgroundColor:"#FAFAFAe9",
+                    backgroundColor: "#FAFAFAe9",
                     color: "#232323",
                     borderRight: "none",
                 },
@@ -100,16 +100,22 @@ const LeadListsPermanent: React.FC<LeadListsPermanentProps> = ({
                                                 fontSize: 14,
                                                 fontWeight: 500,
                                                 noWrap: true,
-                                            }
+                                            },
                                         }}
                                     />
                                 </ListItemButton>
                             </ListItem>
                         ))
                     ) : (
-                        <Box className="px-4 py-2">
-                            <Typography variant="body2">Loading Lists...</Typography>
-                        </Box>
+                        <div className="px-4 py-3 text-center">
+                            <Typography variant="subtitle2" gutterBottom>
+                                No Lists Yet
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component={"p"}>
+                                Start by adding your first lead list. Once uploaded, you&apos;ll be able to view and manage your leads here.
+                            </Typography>
+
+                        </div>
                     )}
                 </List>
 
@@ -118,7 +124,7 @@ const LeadListsPermanent: React.FC<LeadListsPermanentProps> = ({
                         fullWidth
                         variant="contained"
                         sx={{
-                            bgcolor:orange[600]
+                            bgcolor: orange[600]
                         }}
                         onClick={onAddNewList}
                     >

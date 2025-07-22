@@ -29,10 +29,10 @@ import textTemplates from "@/_library/const/text-templates";
 import preforeclosureEmailTemplates from "@/_library/const/email-templates";
 
 import { IUser } from "@/_database/models/user.model";
-import { RealEstateLead } from "@/_database/models/leads/real-estate.model";
-import { ICleanLeadRecord } from "@/_library/types-interfaces-classes/leads";
+import { IRealEstateLeadDocument } from "@/_library/types-interfaces-classes/leads";
 import { motion } from "motion/react"
-import { pressAndExpand, springInView } from "@/_library/animations/call-list.animations";
+import { cardExpandVariants, expandIconVariants, springInView } from "@/_library/animations/call-list.animations";
+import { LeadRecordDocument } from "@/_database/models/leads/real-estate-lead-record.model";
 
 /**
  * Props for the CallListItem component.
@@ -41,7 +41,7 @@ interface CallListItemProps {
     /**
      * The lead to render interaction actions and details for.
      */
-    lead: RealEstateLead;
+    lead: IRealEstateLeadDocument;
 
     /**
      * Index of the lead in the list (for display ordering).
@@ -51,7 +51,7 @@ interface CallListItemProps {
     /**
      * Pre-fetched interaction history for the lead.
      */
-    interactionHistory: ICleanLeadRecord[];
+    interactionHistory: LeadRecordDocument[];
 }
 
 /**
@@ -69,11 +69,13 @@ interface CallListItemProps {
  * @returns {JSX.Element}
  */
 const CallListItem: React.FC<CallListItemProps> = ({ lead, index, interactionHistory }) => {
+    
     const [expanded, setExpanded] = useState(false);
     const [note, setNote] = useState("");
     const [messageType, setMessageType] = useState<"text" | "email" | null>(null);
     const [messageDialogOpen, setMessageDialogOpen] = useState(false);
     const [selectedContact, setSelectedContact] = useState<{ phone?: string; email?: string } | null>(null);
+    const [detailsExpanded, setDetailsExpanded] = useState(false);
 
     const { data: session } = useSession();
     const currentUser = session?.user as unknown as IUser;
@@ -82,6 +84,11 @@ const CallListItem: React.FC<CallListItemProps> = ({ lead, index, interactionHis
      * Expands or collapses the lead card.
      */
     const toggleExpanded = () => setExpanded((prev) => !prev);
+
+    /**
+     * Expands or collapses the addtional details of the lead card.
+     */
+    const toggleDetails = () => setDetailsExpanded(prev => !prev);
 
     /**
      * Initiates a phone call and logs it as a call interaction.
@@ -174,9 +181,16 @@ const CallListItem: React.FC<CallListItemProps> = ({ lead, index, interactionHis
     return (
 
         <motion.div {...springInView}>
-            <motion.div {...pressAndExpand}>
-                <Card  variant="outlined" className="transition-shadow duration-150 hover:shadow-md">
-                    <CardContent   onClick={toggleExpanded} className="cursor-pointer">
+            <motion.div
+                variants={cardExpandVariants}
+                animate={expanded ? "expanded" : "collapsed"}
+            >
+                <Card onClick={(e) => { e.stopPropagation() }} variant="outlined" className="transition-shadow duration-150 hover:shadow-md">
+                    <CardContent className="cursor-pointer" onClick={(e) => {
+                        if (expanded) {
+                            return
+                        }; toggleExpanded(); e.stopPropagation();
+                    }}>
                         <Typography variant="subtitle2" gutterBottom>
                             #{index + 1} — {ownerName}
                         </Typography>
@@ -187,17 +201,20 @@ const CallListItem: React.FC<CallListItemProps> = ({ lead, index, interactionHis
                             Status: {lead.leadStatus} | Type: {lead.leadType}
                         </Typography>
 
-                        <IconButton size="small" onClick={(e) => {e.stopPropagation(); toggleExpanded();  }}>
-                            <motion.div {...pressAndExpand}>
+                        <IconButton size="small" onClick={(e) => { toggleExpanded(); e.stopPropagation(); }}>
+                            <motion.div
+                                animate={expanded ? "expanded" : "collapsed"}
+                                variants={expandIconVariants}
+                            >
                                 <ExpandMoreIcon fontSize="small" />
                             </motion.div>
                         </IconButton>
 
                     </CardContent>
 
-                    <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <Collapse onClick={(e) => { e.stopPropagation() }} in={expanded} timeout="auto" unmountOnExit>
                         <Divider />
-                        <CardContent className="space-y-3 pt-2">
+                        <CardContent onClick={(e) => { e.stopPropagation() }} className="space-y-3 pt-2">
                             {/* Contact Info */}
                             {lead.owner?.map((owner, idx) => (
                                 <div key={idx} className="space-y-1">
@@ -209,14 +226,14 @@ const CallListItem: React.FC<CallListItemProps> = ({ lead, index, interactionHis
                                             </Typography>
                                             <div className="ml-auto flex gap-2">
                                                 <Tooltip title="Call">
-                                                    <IconButton size="small" onClick={(e) => {handleCall(phone.number); e.stopPropagation();  }}>
+                                                    <IconButton size="small" onClick={(e) => { handleCall(phone.number); e.stopPropagation(); }}>
                                                         <PhoneIcon fontSize="small" />
                                                     </IconButton>
                                                 </Tooltip>
                                                 {phone.type?.toLowerCase() === "mobile" && (
                                                     <Tooltip title="Text">
-                                                        <IconButton size="small" onClick={(e) => {handleText(phone.number); e.stopPropagation();  }}>
-                                                            <TextsmsIcon fontSize="small"  />
+                                                        <IconButton size="small" onClick={(e) => { handleText(phone.number); e.stopPropagation(); }}>
+                                                            <TextsmsIcon fontSize="small" />
                                                         </IconButton>
                                                     </Tooltip>
                                                 )}
@@ -227,7 +244,7 @@ const CallListItem: React.FC<CallListItemProps> = ({ lead, index, interactionHis
                                         <div key={i} className="flex items-center justify-between gap-2">
                                             <Typography variant="body2">{email}</Typography>
                                             <Tooltip title="Email">
-                                                <IconButton size="small" onClick={(e) => { handleEmail(email);e.stopPropagation()  }}>
+                                                <IconButton size="small" onClick={(e) => { handleEmail(email); e.stopPropagation() }}>
                                                     <EmailIcon fontSize="small" />
                                                 </IconButton>
                                             </Tooltip>
@@ -277,13 +294,104 @@ const CallListItem: React.FC<CallListItemProps> = ({ lead, index, interactionHis
                                                     {new Date(entry.createdAt ?? "").toLocaleString()}
                                                 </Typography>
                                                 <Typography variant="body2">
-                                                    {entry.actionType.toUpperCase()}: {entry.note}
+                                                    {entry?.actionType.toUpperCase()}: {entry.note}
                                                 </Typography>
                                             </Box>
                                         ))}
                                     </Stack>
                                 </div>
                             )}
+
+                            {/* Additional Details */}
+                            <Button
+                                size="small"
+                                onClick={(e) => { e.stopPropagation(); toggleDetails() }}
+                                sx={{ mt: 2 }}
+                            >
+                                {detailsExpanded ? "Hide Full Details" : "Show Full Details"}
+                            </Button>
+
+                            <Collapse in={detailsExpanded} timeout="auto" unmountOnExit>
+                                <Divider sx={{ my: 2 }} />
+                                <Stack spacing={1}>
+                                    {/* Mailing Info */}
+                                    {lead.mailingInfo && (
+                                        <Box>
+                                            <Typography variant="subtitle2">📬 Mailing Info</Typography>
+                                            <Typography variant="body2">
+                                                {lead.mailingInfo.address}, {lead.mailingInfo.city}, {lead.mailingInfo.state} {lead.mailingInfo.zip}
+                                            </Typography>
+                                            <Typography variant="body2">
+                                                County: {lead.mailingInfo.county ?? "—"}
+                                            </Typography>
+                                            <Typography variant="body2">
+                                                Vacant: {lead.mailingInfo.isVacant ? "Yes" : "No"} | Mailing Vacant: {lead.mailingInfo.isMailingVacant ? "Yes" : "No"}
+                                            </Typography>
+                                            <Typography variant="body2">
+                                                Litigator: {lead.mailingInfo.isLitigator ? "Yes" : "No"} | Opt-Out: {lead.mailingInfo.optOut ? "Yes" : "No"}
+                                            </Typography>
+                                        </Box>
+                                    )}
+
+                                    {/* Loan Info */}
+                                    {lead.loanInfo && (
+                                        <Box>
+                                            <Typography variant="subtitle2">💰 Loan Info</Typography>
+                                            <Typography variant="body2">
+                                                Amount: ${lead.loanInfo.loanAmount?.toLocaleString() ?? "—"} | Balance: ${lead.loanInfo.loanEstBalance?.toLocaleString() ?? "—"}
+                                            </Typography>
+                                            <Typography variant="body2">
+                                                Type: {lead.loanInfo.loanType ?? "—"} | Lender: {lead.loanInfo.loanLenderName ?? "—"}
+                                            </Typography>
+                                            <Typography variant="body2">
+                                                Interest Rate: {lead.loanInfo.loanEstInterestRate ?? "—"}% | Est. Payment: ${lead.loanInfo.loanEstPayment ?? "—"}
+                                            </Typography>
+                                            <Typography variant="body2">
+                                                Recorded: {lead.loanInfo.loanRecordingDate ? new Date(lead.loanInfo.loanRecordingDate).toLocaleDateString() : "—"}
+                                            </Typography>
+                                        </Box>
+                                    )}
+
+                                    {/* Foreclosure Info */}
+                                    {lead.foreclosureInfo && (
+                                        <Box>
+                                            <Typography variant="subtitle2">⚠️ Foreclosure</Typography>
+                                            <Typography variant="body2">
+                                                Status: {lead.foreclosureInfo.status ?? "—"} | Document: {lead.foreclosureInfo.documentType ?? "—"}
+                                            </Typography>
+                                            <Typography variant="body2">
+                                                Auction: {lead.foreclosureInfo.auctionDate ? new Date(lead.foreclosureInfo.auctionDate).toLocaleDateString() : "—"}
+                                            </Typography>
+                                            <Typography variant="body2">
+                                                Trustee: {lead.foreclosureInfo.trusteeOrAttorney ?? "—"} | Case #: {lead.foreclosureInfo.caseNumber ?? "—"}
+                                            </Typography>
+                                        </Box>
+                                    )}
+
+                                    {/* Metadata */}
+                                    {lead.metadata && (
+                                        <Box>
+                                            <Typography variant="subtitle2">📊 Metadata</Typography>
+                                            <Typography variant="body2">
+                                                Owner Occupied: {lead.metadata.ownerOccupied ? "Yes" : "No"} | Self-Managed: {lead.metadata.selfManaged ? "Yes" : "No"}
+                                            </Typography>
+                                            <Typography variant="body2">
+                                                Created: {lead.metadata.createdDate ? new Date(lead.metadata.createdDate).toLocaleDateString() : "—"}
+                                            </Typography>
+                                            {lead.metadata.mlsAgent && (
+                                                <Box>
+                                                    <Typography variant="body2">
+                                                        MLS Agent: {lead.metadata.mlsAgent.fullName ?? "—"} | {lead.metadata.mlsAgent.email ?? ""}
+                                                    </Typography>
+                                                    <Typography variant="body2">
+                                                        Brokerage: {lead.metadata.mlsAgent.brokerageName ?? "—"} | Phone: {lead.metadata.mlsAgent.phone ?? "—"}
+                                                    </Typography>
+                                                </Box>
+                                            )}
+                                        </Box>
+                                    )}
+                                </Stack>
+                            </Collapse>
 
                             {/* Message Dialog */}
                             {messageType && selectedContact && (

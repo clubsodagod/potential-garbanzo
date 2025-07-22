@@ -1,4 +1,3 @@
-import { IRealEstateLeadListDocument } from "@/_database/models/leads/list.model";
 import { serializeRealEstateLead } from "./real-estate-lead.serializer";
 
 /**

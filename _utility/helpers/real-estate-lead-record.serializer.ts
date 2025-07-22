@@ -1,5 +1,4 @@
-import { LeadRecordDocument } from "@/_database/models/leads/real-estate-lead-record.model";
-import { ICleanLeadRecord } from "@/_library/types-interfaces-classes/leads";
+import { ICleanLeadRecord, ISerializedLeadRecord } from "@/_library/types-interfaces-classes/leads";
 
 /**
  * Safely serializes nested date fields (including undefined/null support).
@@ -14,11 +13,11 @@ function serializeDate(value?: Date | string): string | undefined {
  * @param record - Raw MongoDB lead record
  * @returns Serialized lead record
  */
-export function serializeLeadRecord(record: LeadRecordDocument): ICleanLeadRecord {
-    const snapshot = record.leadSnapshot;
+export function serializeLeadRecord(record: ICleanLeadRecord): ISerializedLeadRecord {
+    
 
     return {
-        _id: record._id.toString(),
+        _id: (record._id!).toString(),
         userId: record.userId.toString(),
         actionType: record.actionType,
         timestamp: serializeDate(record.timestamp)!,
@@ -26,47 +25,10 @@ export function serializeLeadRecord(record: LeadRecordDocument): ICleanLeadRecor
         callCount: record.callCount ?? 0,
         metadata: record.metadata ?? {},
 
-        leadSnapshot: {
-            _id: snapshot._id?.toString?.(),
-            leadType: snapshot.leadType,
-            leadStatus: snapshot.leadStatus,
-            batchrankScoreCategory: snapshot.batchrankScoreCategory,
+        leadSnapshot: (record._id!).toString(),
 
-            property: {
-                ...snapshot.property,
-            },
-
-            owner: snapshot.owner.map(owner => ({
-                firstName: owner.firstName,
-                lastName: owner.lastName,
-                phones: owner.phones.map(phone => ({
-                    number: phone.number,
-                    type: phone.type,
-                })),
-                emails: owner.emails ?? [],
-            })),
-
-            loanInfo: snapshot.loanInfo && {
-                ...snapshot.loanInfo,
-                loanRecordingDate: serializeDate(snapshot.loanInfo.loanRecordingDate),
-                loanDueDate: serializeDate(snapshot.loanInfo.loanDueDate),
-            },
-
-            foreclosureInfo: snapshot.foreclosureInfo && {
-                ...snapshot.foreclosureInfo,
-                auctionDate: serializeDate(snapshot.foreclosureInfo.auctionDate),
-                defaultDate: serializeDate(snapshot.foreclosureInfo.defaultDate),
-                recordingDate: serializeDate(snapshot.foreclosureInfo.recordingDate),
-            },
-
-            investmentHighlight: snapshot.investmentHighlight ?? undefined,
-
-            createdAt: serializeDate(snapshot.createdAt),
-            updatedAt: serializeDate(snapshot.updatedAt),
-        },
-
-        createdAt: serializeDate(record.createdAt),
-        updatedAt: serializeDate(record.updatedAt),
+        createdAt: serializeDate(record.createdAt)!,
+        updatedAt: serializeDate(record.updatedAt)!,
     };
 }
 
@@ -76,7 +38,7 @@ export function serializeLeadRecord(record: LeadRecordDocument): ICleanLeadRecor
  * @param records - Raw documents from MongoDB
  * @returns Array of ICleanLeadRecord
  */
-export function serializeLeadRecords(records: LeadRecordDocument[]): ICleanLeadRecord[] {
+export function serializeLeadRecords(records: ISerializedLeadRecord[]): ISerializedLeadRecord[] {
     return records.map(serializeLeadRecord);
 }
 

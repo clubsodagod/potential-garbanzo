@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { Exo_2, Geist, Geist_Mono, MuseoModerno } from "next/font/google";
+import { Exo_2, MuseoModerno } from "next/font/google";
 import "./globals.css";
 import ProvidersWrapper from "@/_components/client/layout/ProvidersWrapper";
 import { appName } from "@/_library/const/brand-assets";
+import Head from "next/head";
 
 const geistSans = MuseoModerno({
   variable: "--font-geist-sans",
@@ -28,12 +29,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+
+      <Head>
+        <link
+          rel="preload"
+          as="fetch"
+          href="https://lottie.host/4f9b1180-3129-4d0c-b034-0c80662febbb/5PPP8zAgEi.lottie"
+          crossOrigin="anonymous"
+        />
+      </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-          <ProvidersWrapper>
-            {children}
-          </ProvidersWrapper>
+        <ProvidersWrapper>
+          {children}
+        </ProvidersWrapper>
 
       </body>
     </html>

@@ -2,7 +2,7 @@
 import connectToDB from "@/_database/connect-to-db.database";
 import { LeadRecordDocument, LeadRecordModel } from "@/_database/models/leads/real-estate-lead-record.model";
 import { RealEstateLeadModel } from "@/_database/models/leads/real-estate.model";
-import { ICleanLeadRecord } from "@/_library/types-interfaces-classes/leads";
+import { ICleanLeadRecord, ISerializedLeadRecord } from "@/_library/types-interfaces-classes/leads";
 import { serializeLeadRecords } from "@/_utility/helpers/real-estate-lead-record.serializer";
 
 /**
@@ -19,7 +19,7 @@ export async function getLeadInteractionHistory(
     const raw = await LeadRecordModel.find({ leadSnapshot: leadId }).populate("leadSnapshot")
         .sort({ timestamp: -1 })
         .lean()
-        .exec() as unknown as LeadRecordDocument[];
+        .exec() as unknown as ISerializedLeadRecord[];
 
     return serializeLeadRecords(raw);
 }
