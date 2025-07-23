@@ -7,6 +7,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "react-hot-toast";
 import lightTheme from "@/_library/themes/light.theme";
+import { TaskProvider } from "@/_context/TaskContext";
 
 /**
  * Props for the ProvidersWrapper component.
@@ -44,7 +45,9 @@ const ProvidersWrapper: React.FC<ProvidersWrapperProps> = ({ children }) => {
                 <ThemeProvider theme={lightTheme}>
                     <CssBaseline />
                     <Toaster position="top-right" />
-                    {children}
+                    <TaskProvider>
+                        {children}
+                    </TaskProvider>
                 </ThemeProvider>
             </AppRouterCacheProvider>
         </SessionProvider>

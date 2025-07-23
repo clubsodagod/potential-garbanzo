@@ -18,7 +18,7 @@ export type UserType = {
     password: string;
     createdAt: Date;
     updatedAt: Date;
-    role: "customer" | "employee" | "admin";
+    role: "customer" | "partner" | "admin";
 
     // Account Verification
     verificationToken: string;
@@ -70,7 +70,7 @@ export interface UserUpdateForm {
     emailVerified: boolean;
     avatar: string;
     password: string;
-    role: "customer" | "employee" | "admin";
+    role: "customer" | "partner" | "admin";
 
     // Analytics and Preferences
     lastLogin: Date; // Tracks last activity for engagement metrics

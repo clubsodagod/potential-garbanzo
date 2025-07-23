@@ -23,7 +23,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             async authorize(credentials) {
 
                 // define user 
-                let user = null;
+                let user: UserType | null = null;
 
                 console.log(credentials);
 
@@ -35,7 +35,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     throw new Error('Something went wrong with the login attempt. Please try again.')
                 }
 
-                return serializeUser(user)
+                // Ensure the returned value matches UserType
+                return serializeUser(user) as unknown as UserType;
             }
         })
     ],

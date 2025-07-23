@@ -1,20 +1,17 @@
-import bcrypt from 'bcryptjs'
-
+import bcrypt from "bcryptjs";
 
 type PasswordComparerProps = {
-    hashedPassword:string;
-    password:string;
-}
+    hashedPassword: string;
+    password: string;
+};
 
-
-
+/**
+ * Compares a plain password against a hashed password using bcrypt.
+ *
+ * @param {PasswordComparerProps} payload - Plain text and hashed password pair.
+ * @returns {Promise<boolean>} - True if passwords match, false otherwise.
+ */
 export async function isAPasswordMatch(payload: PasswordComparerProps): Promise<boolean> {
-
-    // destructure props
     const { hashedPassword, password } = payload;
-
-    const result = bcrypt.compare(password, hashedPassword);
-
-
-    return result
+    return await bcrypt.compare(password, hashedPassword);
 }

@@ -38,7 +38,7 @@ const AuthenticatedOnly = <P extends object>(
                     redirect("/register");
                 } else {
                     const role = session?.user?.role;
-                    if (role === "employee" || role === "admin") {
+                    if (role === "partner" || role === "admin") {
                         setReady(true);
                     } else {
                         redirect("/");

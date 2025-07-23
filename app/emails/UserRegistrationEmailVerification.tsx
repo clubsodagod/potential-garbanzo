@@ -1,77 +1,98 @@
-import { Html, Heading, Text, Button, Section, Container, Link } from "@react-email/components";
+import {
+    Html,
+    Heading,
+    Text,
+    Section,
+    Img,
+} from "@react-email/components";
 import * as React from "react";
+import { logoMain } from "@/_library/const/brand-assets";
 
-interface EmailVerificationProps {
-    firstName?: string;
+export interface UserSignUpEmailVerificationEmailProps {
+    /** Full name of the user */
+    name?: string;
+    /** The unique email verification URL */
     verificationUrl: string;
 }
 
-const UserRegistrationEmailVerification: React.FC<EmailVerificationProps> = ({
-    firstName = "Change Immediately",
-    verificationUrl = `http://localhost:3000/admin/access/email-verification-status${new URLSearchParams({
-        token: "487h83dh037r40gr784jd3",
-        username: "maliekdavis",
-        role: "admin",
-    })}`,
+/**
+ * UserSignUpEmailVerificationEmail
+ *
+ * Renders a styled and accessible email prompting the user to verify their email after signup.
+ * Uses semantic tags, MUI-compatible style, and React Email for safe rendering in clients.
+ *
+ * @component
+ * @param {UserSignUpEmailVerificationEmailProps} props - User details and verification link
+ * @returns {JSX.Element}
+ */
+const UserSignUpEmailVerificationEmail: React.FC<UserSignUpEmailVerificationEmailProps> = ({
+    name,
+    verificationUrl,
 }) => {
-    const name = firstName.trim() || "there";
-
     return (
-        <Html>
-            <Section style={{ backgroundColor: "#f5f5f5", padding: "40px 0" }}>
-                <Container
+        <Html lang="en">
+            <main
+                style={{
+                    fontFamily: "sans-serif",
+                    padding: "40px 16px",
+                    backgroundColor: "#f8fafc",
+                }}
+            >
+                <Section
                     style={{
-                        backgroundColor: "#ffffff",
-                        padding: "40px",
-                        borderRadius: "8px",
-                        fontFamily: "sans-serif",
                         maxWidth: "600px",
                         margin: "0 auto",
+                        padding: "48px 32px",
+                        borderRadius: "12px",
+                        backgroundColor: "#ffffff",
+                        boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
+                        textAlign: "left",
                     }}
                 >
-                    <Heading as="h2" style={{ color: "#333", marginBottom: "20px" }}>
-                        Verify Your Email Address
+                    <div style={{ textAlign: "center", marginBottom: "24px" }}>
+                        <Img
+                            src={logoMain}
+                            alt="Brand Logo"
+                            width="160"
+                            height="auto"
+                            style={{ margin: "0 auto" }}
+                        />
+                    </div>
+
+                    <Heading as="h2" style={{ color: "#1d4ed8", marginBottom: "12px" }}>
+                        Confirm Your Email{name ? `, ${name}` : ""}!
                     </Heading>
 
-                    <Text style={{ color: "#555", fontSize: "16px", marginBottom: "20px", lineHeight: "1.5" }}>
-                        Hi {name}, welcome! Please verify your email address to complete your registration.
+                    <Text style={{ fontSize: "16px", lineHeight: "1.6", color: "#334155" }}>
+                        Thanks for signing up{name ? `, ${name}` : ""}! Before we can get started, we need you to confirm your email address.
                     </Text>
 
-                    <Button
-                        href={verificationUrl}
-                        style={{
-                            backgroundColor: "#007BFF",
-                            color: "#ffffff",
-                            padding: "12px 24px",
-                            textDecoration: "none",
-                            borderRadius: "5px",
-                            fontWeight: "bold",
-                            fontSize: "16px",
-                        }}
-                    >
-                        Verify Email
-                    </Button>
-
-                    <Text style={{ color: "#777", fontSize: "14px", marginTop: "30px" }}>
-                        If the button doesn’t work, copy and paste the following link into your browser:
-                    </Text>
-                    <Link
-                        href={verificationUrl}
-                    >
-                        <Text style={{ color: "#007BFF", wordBreak: "break-all", fontSize: "14px" }}
+                    <div className="py-4">
+                        <a
+                            href={verificationUrl}
+                            style={{
+                                backgroundColor: "#2563eb",
+                                color: "#ffffff",
+                                padding: "12px 20px",
+                                borderRadius: "6px",
+                                fontWeight: 600,
+                                textDecoration: "none",
+                                display: "inline-block",
+                            }}
+                            target="_blank"
+                            rel="noopener noreferrer"
                         >
-                            {verificationUrl}
-                        </Text>
-                    </Link>
+                            Verify Email
+                        </a>
+                    </div>
 
-
-                    <Text style={{ color: "#999", fontSize: "13px", marginTop: "40px" }}>
-                        If you didn’t request this, you can safely ignore this email.
+                    <Text style={{ fontSize: "14px", lineHeight: "1.5", color: "#64748b" }}>
+                        If you didn’t sign up for an account, you can safely ignore this email.
                     </Text>
-                </Container>
-            </Section>
+                </Section>
+            </main>
         </Html>
     );
 };
 
-export default UserRegistrationEmailVerification;
+export default UserSignUpEmailVerificationEmail;

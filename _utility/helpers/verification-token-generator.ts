@@ -1,7 +1,10 @@
-import { v4 as verificationToken } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
-
-
-export function generateVerificationToken () {
-    return verificationToken()
+/**
+ * Generates a secure unique email verification token.
+ *
+ * @returns {string} - UUID v4 token string.
+ */
+export function generateVerificationToken(): string {
+    return uuidv4();
 }

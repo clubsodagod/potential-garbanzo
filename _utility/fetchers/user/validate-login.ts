@@ -3,63 +3,38 @@ import UserModel from "@/_database/models/user.model";
 import { isAPasswordMatch } from "./is-password-a-match";
 import { Credentials, UserType } from "@/_library/types-interfaces-classes/user";
 
-
-
-
-
-
-
-
+/**
+ * Validates a user login attempt by email or username and password.
+ *
+ * @param {Credentials} credentials - The login credentials including username/email and password.
+ * @returns {Promise<UserType | null>} - The authenticated user or null if login fails.
+ */
 export default async function validateLogin(credentials: Credentials): Promise<UserType | null> {
     try {
-        await connectToDB()
-
-        // destructure credentials
+        await connectToDB();
         const { credential, secret } = credentials;
 
-        console.log(credentials);
+        const isEmail = credential.includes("@");
+        const user = await UserModel.findOne(isEmail ? { email: credential } : { username: credential });
 
-        // define user
-        let user = null
-
-
-        // check if credential is email or username
-        if (credential.includes("@")) {
-            user = await UserModel.findOne({ email: credential });
-            if (!user) {
-                throw new Error('No user associated with that email.')
-            }
-
-            const payload = {
-                password: secret,
-                hashedPassword: user.password
-            }
-
-            if (!isAPasswordMatch(payload)) {
-                throw new Error("Invalid login attempt. Please try again.")
-            }
-
-            return user.depopulate("password") as UserType
-        } else {
-            user = await UserModel.findOne({ username: credential });
-            if (!user) {
-                throw new Error('There are no accounts associated with that email.')
-            }
-
-            const payload = {
-                password: secret,
-                hashedPassword: user.password
-            }
-
-            if (!isAPasswordMatch(payload)) {
-                throw new Error("Invalid login attempt. Please try again.")
-            }
-            return user.depopulate('password')
+        if (!user) {
+            throw new Error(
+                `No user found with that ${isEmail ? "email" : "username"}.`
+            );
         }
 
-    } catch (error) {
-        console.log(error);
+        const isMatch = await isAPasswordMatch({
+            password: secret,
+            hashedPassword: user.password,
+        });
 
-        return null
+        if (!isMatch) {
+            throw new Error("Incorrect password. Please try again.");
+        }
+
+        return user.depopulate("password") as UserType;
+    } catch (error) {
+        console.error("validateLogin error:", error);
+        return null;
     }
 }

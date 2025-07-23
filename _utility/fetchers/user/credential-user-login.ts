@@ -1,31 +1,24 @@
 import validateLogin from "./validate-login";
 
-
+/**
+ * Attempts to authenticate a user based on credential (email/username) and password.
+ *
+ * @param {string} password - The plain text password.
+ * @param {string} credential - Username or email address.
+ * @returns {Promise<any | null>} - The authenticated user object or null on failure.
+ */
 export default async function credentialUserLogin(password: string, credential: string) {
-
     try {
-        // define credential object
-        const credentials = {
-            credential: credential, secret: password
-        }
-
-        console.log(credentials);
-
-
+        const credentials = { credential, secret: password };
         const user = await validateLogin(credentials);
 
-        // Check for response status and handle errors
         if (!user) {
-            throw new Error(`HTTP error! Status: There was an error with the login attempt. Please try again.`);
+            throw new Error("Login failed. Please check your credentials.");
         }
 
-        // Parse the JSON response
-        const data = await user;
-        console.log("User data:", data);
-        console.log(user);
-        return data
-    } catch (error: unknown) {
-        console.log(error);
-        return null
+        return user;
+    } catch (error) {
+        console.error("Login error:", error);
+        return null;
     }
 }

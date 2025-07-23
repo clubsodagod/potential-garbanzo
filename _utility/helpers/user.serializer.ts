@@ -1,13 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export async function serializeUser(user: any): Promise<any> {
+
+/**
+ * Serializes a Mongoose user document into a plain JavaScript object with stringified ObjectIds.
+ *
+ * @param {IUser} user - The raw user document.
+ * @returns {Promise<Record<string, any>>} - The sanitized and flattened user object.
+ */
+export async function serializeUser(user: any): Promise<Record<string, any>> {
     const toStr = (v: any) => v?.toString?.();
     const serializeObjectId = (id: any) => {
-        if (!id || typeof id !== 'object' || !id.id) return undefined;
+        if (!id || typeof id !== "object" || !id.id) return undefined;
         return Array.from(id.id as Uint8Array)
-            .map((byte: number) => byte.toString(16).padStart(2, '0'))
-            .join('');
+            .map((byte: number) => byte.toString(16).padStart(2, "0"))
+            .join("");
     };
+
     return {
         _id: serializeObjectId(user._id),
         firstName: user.firstName,
@@ -23,8 +31,12 @@ export async function serializeUser(user: any): Promise<any> {
 
         lastLogin: toStr(user.lastLogin),
         loginCount: user.loginCount,
-        preferredCategories: Array.isArray(user.preferredCategories) ? user.preferredCategories : [],
-        searchHistory: Array.isArray(user.searchHistory) ? user.searchHistory : [],
+        preferredCategories: Array.isArray(user.preferredCategories)
+            ? user.preferredCategories
+            : [],
+        searchHistory: Array.isArray(user.searchHistory)
+            ? user.searchHistory
+            : [],
         viewedProducts: user.viewedProducts?.map(toStr),
         purchaseHistory: user.purchaseHistory?.map(toStr),
         abandonedCarts: user.abandonedCarts?.map(toStr),
@@ -35,7 +47,8 @@ export async function serializeUser(user: any): Promise<any> {
         communicationPreferences: {
             emailMarketing: user.communicationPreferences?.emailMarketing ?? true,
             smsMarketing: user.communicationPreferences?.smsMarketing ?? false,
-            pushNotifications: user.communicationPreferences?.pushNotifications ?? true,
+            pushNotifications:
+                user.communicationPreferences?.pushNotifications ?? true,
         },
 
         rewardPoints: user.rewardPoints,
