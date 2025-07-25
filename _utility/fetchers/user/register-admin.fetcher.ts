@@ -39,9 +39,7 @@ export async function registerAdminUser(data: IUserForm): Promise<ResponseStatus
             role,
         } = data;
 
-        if (role !== "admin") {
-            return { error: true, message: "Unauthorized role. Only admins can be registered here." };
-        }
+
 
         if (
             !firstName ||
@@ -50,7 +48,8 @@ export async function registerAdminUser(data: IUserForm): Promise<ResponseStatus
             !email ||
             !confirmEmail ||
             !password ||
-            !confirmPassword
+            !confirmPassword ||
+            !role
         ) {
             return { error: true, message: "All required fields must be provided." };
         }

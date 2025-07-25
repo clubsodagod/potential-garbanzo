@@ -1,4 +1,5 @@
-import { ITask } from "./task";
+import { IResponseStatus } from "./common";
+import { IAdminVerificationTask, ITask } from "./task";
 
 
 /**
@@ -8,7 +9,7 @@ import { ITask } from "./task";
 export interface TaskService {
     admin: {
         accounts: {
-            approve: (taskId: string) => Promise<boolean>;
+            approve: (taskId: string) => Promise<IResponseStatus<IAdminVerificationTask | null>>;
             deny: (taskId: string) => Promise<boolean>;
         };
         createTask: (task: Partial<ITask>) => Promise<ITask | null>;

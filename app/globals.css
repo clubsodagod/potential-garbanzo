@@ -20,6 +20,6 @@
 }
 
 body {
-  background: var(--background);
+  background: #232323;
   color: var(--foreground);
 }

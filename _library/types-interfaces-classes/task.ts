@@ -42,7 +42,7 @@ export interface IBaseTask {
     /**
      * The user who created the task.
      */
-    createdBy: IUser["_id"];
+    createdBy: IUser;
 
     /**
      * Optional assignee responsible for completing the task.

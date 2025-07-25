@@ -1,67 +1,44 @@
-// /lib/serializers/task.serializer.ts
-
 import { ClientTask } from "@/_library/types-interfaces-classes/client/task.client";
-import { ITask } from "@/_library/types-interfaces-classes/task";
+import { ITask, IAdminVerificationTask } from "@/_library/types-interfaces-classes/task";
+import { serializeUserSync } from "./user-serializer.sync";
 
 /**
  * serializeTask
  *
  * Converts a server-side `ITask` document into a `ClientTask` object suitable for frontend use.
- * Useful for sending clean and simplified task data to the client via API responses or UI rendering.
+ * Handles the `AdminVerification` discriminator fields.
  *
- * @param {ITask} task - The full server-side task document (including MongoDB ObjectId, dates, and relational references).
+ * @param {ITask} task - The full server-side task document (including Mongoose ObjectId, dates, and references).
  * @returns {ClientTask} A plain object containing safe, stringified, and UI-ready task data.
  */
 export function serializeTask(task: ITask): ClientTask {
-    return {
-        /**
-         * Stringified MongoDB ObjectId representing the task.
-         */
-        id: task._id?.toString() || "",
-
-        /**
-         * Discriminator type of the task (e.g., "AdminVerification").
-         */
+    const base = {
+        _id: `${task._id ?? ""}`,
         type: task.type,
-
-        /**
-         * Current status of the task.
-         */
         status: task.status,
-
-        /**
-         * ID of the user who created the task.
-         */
-        createdBy: task.createdBy?.toString?.() || "",
-
-        /**
-         * Optional ID of the user assigned to the task.
-         */
-        assignedTo: task.assignedTo?.toString?.(),
-
-        /**
-         * Optional due date (converted to ISO string).
-         */
+        createdBy: serializeUserSync(task.createdBy),
+        assignedTo: task.assignedTo?.toString(),
         dueDate: task.dueDate?.toISOString(),
-
-        /**
-         * Optional short description or admin comment for the task.
-         */
         comments: task.comments,
-
-        /**
-         * Optional list of notes associated with the task.
-         */
         notes: task.notes,
-
-        /**
-         * Task creation timestamp as ISO string.
-         */
         createdAt: task.createdAt?.toISOString(),
-
-        /**
-         * Task last update timestamp as ISO string.
-         */
         updatedAt: task.updatedAt?.toISOString(),
     };
+
+    // Handle discriminator-specific fields
+    if (task.type === "AdminVerification") {
+        const adminTask = task as IAdminVerificationTask;
+
+        return {
+            ...base,
+            userToVerifyId: adminTask.userToVerifyId?.toString()||"",
+            userEmail: adminTask.userEmail,
+            verificationToken: adminTask.verificationToken,
+            approvedBy: adminTask.approvedBy?.toString(),
+            decisionDate: adminTask.decisionDate?.toISOString(),
+            decisionNotes: adminTask.decisionNotes,
+        } as unknown as ClientTask;
+    }
+
+    return base as unknown as ClientTask;
 }

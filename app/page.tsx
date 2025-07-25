@@ -1,16 +1,15 @@
 "use client"
 
-import LeadFlowHomeModule from "@/_components/client/home/LeadFlowHomeModule";
-import AuthenticatedOnly from "@/_components/route-protection/AuthenticatedOnly";
+import HomePageModule from "@/_components/client/home/HomePageModule";
 
 
 
 
-function Home() {
+function HomePage() {
   return (
-    <LeadFlowHomeModule />
+    <HomePageModule />
   );
 }
 
 
-export default AuthenticatedOnly(Home)
+export default HomePage

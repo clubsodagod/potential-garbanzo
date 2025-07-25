@@ -1,10 +1,10 @@
-// /types/client/task.client.ts
+import { IUser } from "@/_database/models/user.model";
 
 /**
  * ClientTask
  *
  * Represents a task object formatted for client-side consumption (e.g., in a React app or frontend API).
- * This interface is typically the result of serializing a full server-side task document.
+ * This interface includes both shared fields and discriminator-specific fields.
  */
 export interface ClientTask {
     /**
@@ -15,17 +15,17 @@ export interface ClientTask {
     /**
      * Discriminator for the type of task (e.g., "AdminVerification").
      */
-    type: string;
+    type: "AdminVerification"; // restrict to known types for now
 
     /**
      * Current status of the task (e.g., "pending", "completed").
      */
-    status: string;
+    status: "pending" | "approved" | "rejected" | "completed" | "cancelled";
 
     /**
-     * ID of the user who created the task.
+     * Serialized user object of the task creator.
      */
-    createdBy: string;
+    createdBy: IUser;
 
     /**
      * Optional ID of the user currently assigned to complete the task.
@@ -56,4 +56,36 @@ export interface ClientTask {
      * ISO timestamp string indicating the last time the task was updated.
      */
     updatedAt?: string;
+
+    // ----- AdminVerificationTask-specific fields -----
+
+    /**
+     * ID of the user being verified.
+     */
+    userToVerifyId?: string;
+
+    /**
+     * Email of the user being verified.
+     */
+    userEmail: string;
+
+    /**
+     * Verification token associated with the user’s email.
+     */
+    verificationToken: string;
+
+    /**
+     * Optional ID of the admin who approved or rejected the verification.
+     */
+    approvedBy?: string;
+
+    /**
+     * Optional ISO string timestamp when the decision was made.
+     */
+    decisionDate?: string;
+
+    /**
+     * Optional reason or summary of the decision outcome.
+     */
+    decisionNotes?: string;
 }

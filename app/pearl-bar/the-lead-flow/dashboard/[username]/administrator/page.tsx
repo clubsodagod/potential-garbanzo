@@ -33,11 +33,9 @@ export default async function AdministratorDashboardPage({
     params,
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }:any) {
-    const user = await getUserByUsername(params.username);
+    const username = await params.username
+    
 
-    if (!user) {
-        return <div>User not found</div>;
-    }
 
-    return <AdministratorDashboardModule user={user} />;
+    return <AdministratorDashboardModule username={username} />;
 }

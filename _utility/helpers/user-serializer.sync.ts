@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { serializeTask } from "./task.serializer";
-
+import { IUser } from "@/_database/models/user.model";
 
 /**
  * Serializes a Mongoose user document into a plain JavaScript object with stringified ObjectIds.
+ * This synchronous version assumes tasks (and other fields) are already loaded or do not require async operations.
  *
  * @param {IUser} user - The raw user document.
- * @returns {Promise<Record<string, any>>} - The sanitized and flattened user object.
+ * @returns {Record<string, any>} - The sanitized and flattened user object.
  */
-export async function serializeUser(user: any): Promise<Record<string, any>> {
+export function serializeUserSync(user: any): Record<string, any> {
     const toStr = (v: any) => v?.toString?.();
     const serializeObjectId = (id: any) => {
         if (!id || typeof id !== "object" || !id.id) return undefined;
@@ -63,9 +64,23 @@ export async function serializeUser(user: any): Promise<Record<string, any>> {
         createdAt: toStr(user.createdAt),
         updatedAt: toStr(user.updatedAt),
 
-        // 🔥 Add serialized tasks
         tasks: Array.isArray(user.tasks)
-            ? user.tasks.map(serializeTask)
+            ? user.tasks.map((task: any) => {
+                // You must ensure `serializeTask` is sync-safe if used here.
+                // Use a modified `serializeTaskSync` if needed.
+                return {
+                    id: `${task._id}`,
+                    type: task.type,
+                    status: task.status,
+                    createdBy: toStr(task.createdBy),
+                    assignedTo: toStr(task.assignedTo),
+                    dueDate: task.dueDate?.toISOString?.(),
+                    comments: task.comments,
+                    notes: task.notes,
+                    createdAt: task.createdAt?.toISOString?.(),
+                    updatedAt: task.updatedAt?.toISOString?.(),
+                };
+            })
             : [],
     };
 }

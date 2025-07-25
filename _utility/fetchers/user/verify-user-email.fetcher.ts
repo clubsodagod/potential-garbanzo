@@ -1,3 +1,4 @@
+"use server"
 import connectToDB from "@/_database/connect-to-db.database";
 import UserModel, { IUser } from "@/_database/models/user.model";
 import { Resend } from "resend";
@@ -92,23 +93,20 @@ export async function verifyUserEmail({
             metadata: {
                 registeredAt: user.createdAt,
                 userName: user.username,
-                firstName:user.firstName,
-                lastName:user.lastName
+                firstName: user.firstName,
+                lastName: user.lastName
             },
         });
 
-        // 3️⃣ Assign task to all admins
-        const adminResponse = await fetchAllAdmins();
+        // 3️⃣ Assign task to all admins directly in the DB
+        const adminResponse = await UserModel.updateMany(
+            { role: "admin" }, // ensure this matches your admin role key
+            { $push: { tasks: newTask._id } },
+            {new:true}
+        );
 
-        if (adminResponse.success && adminResponse.data) {
-            const adminUsers = adminResponse.data;
-
-            await Promise.all(
-                adminUsers.map(async (admin) => {
-                    admin.tasks.push(newTask._id);
-                    await admin.save();
-                })
-            );
+        if (!adminResponse.acknowledged) {
+            throw new Error("There was an issue assigning task when creating user.")
         }
 
         return {

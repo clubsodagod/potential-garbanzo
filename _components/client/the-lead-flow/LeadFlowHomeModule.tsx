@@ -3,12 +3,14 @@
 import React, { useEffect, useState } from "react";
 import CallList from "./call-list/CallList";
 import ListLoader from "./list-loader/ListLoader";
-import Navbar from "../layout/navbar/Navbar";
+import Navbar from "../layout/navbar/the-lead-flow/Navbar";
 import LeadLists from "./lead-lists/LeadLists";
 import { getAllLists } from "@/_utility/fetchers/leads/get-all-lists.fetcher";
 import { IRealEstateLeadListDocument } from "@/_database/models/leads/list.model";
 import LeadListsPermanent from "./lead-lists/LeadsListPermanent";
 import { InteractionSummary, summarizeInteractions } from "@/_utility/helpers/interaction-summary.helper";
+import { Button } from "@mui/material";
+import { signOut } from "next-auth/react";
 
 /**
  * LeadFlowHomeModule
@@ -38,13 +40,13 @@ const LeadFlowHomeModule: React.FC = () => {
      * Logs an error if the fetch fails.
      */
     const refreshLists = async (): Promise<void> => {
-            setLoading(!loading);
+        setLoading(!loading);
         const response = await getAllLists();
         if (response.success) {
             setLeadLists(response.data);
             //     setLoading(false);
 
-            setTimeout(()=> {
+            setTimeout(() => {
                 setLoading(false);
             }, 3000)
         } else {
@@ -57,6 +59,7 @@ const LeadFlowHomeModule: React.FC = () => {
      */
     useEffect(() => {
         refreshLists();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     /**
@@ -69,7 +72,7 @@ const LeadFlowHomeModule: React.FC = () => {
             leadLists[selectedListIndex]
         ) {
             setSelectedList(leadLists[selectedListIndex]);
-                        setSummary(summarizeInteractions(
+            setSummary(summarizeInteractions(
                 leadLists[selectedListIndex].leadIds.flatMap(lead => lead.leadInteractionHistory ?? [])
             ));
         } else {
@@ -101,7 +104,7 @@ const LeadFlowHomeModule: React.FC = () => {
             >
 
                 <div
-                className="md:w-[340px]"
+                    className="md:w-[340px]"
                 >
                     {/* Lead List Drawer for mobile */}
                     <LeadListsPermanent
@@ -122,6 +125,18 @@ const LeadFlowHomeModule: React.FC = () => {
                         onAddNewList={handleAddNewList}
                         onMenuClick={handleDrawerToggle}
                     />
+                    <div className="ml-auto mr-6 mt-6">
+                        <Button
+                            color="error"
+                            variant="contained"
+                            onClick={() => signOut({ callbackUrl: "/login" })}
+                            sx={{ borderRadius: 8 }}
+                        >
+                            Sign Out
+                        </Button>
+                    </div>
+
+
                     <div
                         className="w-full grow flex flex-col justify-center items-center  px-6"
                     >

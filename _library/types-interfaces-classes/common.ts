@@ -14,3 +14,11 @@ export interface IResponseStatus<T> {
     message: string;
     data?: T;
 }
+
+// /types/nav.ts
+
+export interface NavItem {
+    label: string;
+    path: string;
+    children?: NavItem[];
+}
