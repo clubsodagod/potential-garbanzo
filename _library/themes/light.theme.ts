@@ -80,26 +80,24 @@ const lightTheme = createTheme({
         outlined: {
           position: 'relative',
           color: 'white',
-          backgroundColor: 'rgba(244, 236, 236, 0.2)',
-          minWidth: '11.75rem',
+          backgroundColor: 'rgba(0, 0, 0, 0.2)',
           borderRadius: '34px',
           fontWeight: 600,
           border: 'none',
           padding: '0.9375rem 1.5rem',
-          zIndex: 1, // Ensure content is above the pseudo-element
+          zIndex: 1,
 
           '&:hover': {
             backgroundColor: '#000000',
             boxShadow: `
-    0 0 6px #FFDB01,
-    0 0 10px #FF851F,
-    0 0 14px #FF3D3D,
-    0 0 18px #FF0F6F,
-    0 0 22px #FE01FA
-  `,
-            textShadow: '0 0 3px #FF3D3D',
+        0 0 6px #FF5CFF,
+        0 0 10px #7BFFFF,
+        0 0 14px #5C58FF,
+        0 0 18px #FFD5FF,
+        0 0 22px #923B66
+      `,
+            textShadow: '0 0 3px #FF5CFF',
           },
-
 
           '&::before': {
             content: '""',
@@ -108,17 +106,36 @@ const lightTheme = createTheme({
             left: 0,
             right: 0,
             bottom: 0,
-            zIndex: -1, // Place behind the button content
-            padding: '2px', // border size
-            background: 'linear-gradient(89.84deg, #FFDB01 -46.23%, #FF851F 5.03%, #FF3D3D 38.29%, #FF0F6F 74.04%, #FE01FA 129.67%)',
+            zIndex: -1,
+            padding: '2px',
+            background: 'linear-gradient(89.84deg, #FF5CFF -46.23%, #7BFFFF 5.03%, #5C58FF 38.29%, #FFD5FF 74.04%, #923B66 129.67%)',
             WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
             WebkitMaskComposite: 'xor',
             maskComposite: 'exclude',
             borderRadius: 'inherit',
-            pointerEvents: 'none', // Ensures clicks go to button, not the pseudo-element
+            pointerEvents: 'none',
+          },
+
+          // Special variant for buttons with id="alt"
+          '&[id="alt"]': {
+            color: '#000000',
+            backgroundColor: 'rgba(255, 255, 255, 0.2)',
+
+            '&:hover': {
+              backgroundColor: 'rgba(255, 255, 255, 0.4)',
+              boxShadow: `
+          0 0 6px #FF5CFF,
+          0 0 10px #7BFFFF,
+          0 0 14px #5C58FF,
+          0 0 18px #FFD5FF,
+          0 0 22px #923B66
+        `,
+              textShadow: '0 0 2px #7BFFFF',
+            },
           },
         },
-      },
+      }
+
 
 
     }

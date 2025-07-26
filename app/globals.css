@@ -20,6 +20,50 @@
 }
 
 body {
+  margin: 0;
+  padding: 0%;
   background: #232323;
   color: var(--foreground);
+  min-height: 100dvh;
+}
+
+@keyframes glowPulse {
+  0% {
+    text-shadow:
+      0 0 6px #FF5CFF,
+      0 0 10px #7BFFFF,
+      0 0 14px #5C58FF,
+      0 0 18px #FFD5FF,
+      0 0 22px #923B66;
+  }
+
+  50% {
+    text-shadow:
+      0 0 10px #FF5CFF,
+      0 0 14px #7BFFFF,
+      0 0 18px #5C58FF,
+      0 0 22px #FFD5FF,
+      0 0 26px #923B66;
+  }
+
+  100% {
+    text-shadow:
+      0 0 6px #FF5CFF,
+      0 0 10px #7BFFFF,
+      0 0 14px #5C58FF,
+      0 0 18px #FFD5FF,
+      0 0 22px #923B66;
+  }
+}
+
+.glowText {
+  color: #ffffff;
+  font-weight: 700;
+  animation: glowPulse 3s ease-in-out infinite;
+  transition: text-shadow 0.3s ease, color 0.3s ease;
+}
+
+.glowText:hover {
+  color: #ffffff;
+  animation: glowPulse 1.5s ease-in-out infinite;
 }

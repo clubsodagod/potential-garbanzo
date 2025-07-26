@@ -1,8 +1,9 @@
 import React from 'react'
+import AboutPageMainModule from './_components/AboutPageMainModule'
 
 const AboutPage = () => {
   return (
-    <div>AboutPage</div>
+    <AboutPageMainModule />
   )
 }
 

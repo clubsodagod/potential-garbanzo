@@ -3,24 +3,29 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
+import { usePathname } from "next/navigation";
+import {
+    AppBar,
+    Box,
+    Toolbar,
+    IconButton,
+    Typography,
+    Menu,
+    MenuItem,
+    Container,
+    Button,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
 import { logoAltText, pearlBoxLogoMain } from "@/_library/const/brand-assets";
 import { navItems } from "@/_library/const/nav-items";
 
 /**
  * PearlBoxGlobalNav
  * Responsive navigation bar using MUI AppBar and Next.js routing.
+ * Automatically hides if user is on a nested /pearl-bar/* route.
  */
 function PearlBoxGlobalNav() {
+    const pathname = usePathname();
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -31,21 +36,26 @@ function PearlBoxGlobalNav() {
         setAnchorElNav(null);
     };
 
+    // Hide navbar on nested Pearl Bar routes (e.g., /pearl-bar/tool-name)
+    const hideOnSubPearlBar = pathname.startsWith("/pearl-bar/");
+
+    if (hideOnSubPearlBar) return null;
+
     return (
-        <AppBar position="sticky" sx={{ bgcolor: "transparent", boxShadow: "none" }}>
+        <AppBar position="sticky" sx={{ bgcolor: "#232323" }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     {/* Logo */}
                     <Link href="/" passHref>
                         <Box sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
-                            <Image alt={logoAltText} src={pearlBoxLogoMain} width={75} height={75} />
+                            <Image alt={logoAltText} src={pearlBoxLogoMain} width={50} height={50} />
                             <Typography
                                 variant="h6"
                                 noWrap
                                 sx={{
                                     ml: 1,
                                     display: { xs: "none", md: "flex" },
-                                    fontWeight: 700,
+                                    fontWeight: 500,
                                     color: "inherit",
                                     textDecoration: "none",
                                 }}
@@ -55,8 +65,14 @@ function PearlBoxGlobalNav() {
                         </Box>
                     </Link>
 
-                    {/* Mobile Menu Button */}
-                    <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" }, justifyContent: "flex-end" }}>
+                    {/* Mobile Menu */}
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            display: { xs: "flex", md: "none" },
+                            justifyContent: "flex-end",
+                        }}
+                    >
                         <IconButton size="large" onClick={handleOpenNavMenu} color="inherit">
                             <MenuIcon />
                         </IconButton>
@@ -79,7 +95,7 @@ function PearlBoxGlobalNav() {
                         </Menu>
                     </Box>
 
-                    {/* Desktop Nav Links */}
+                    {/* Desktop Links */}
                     <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, justifyContent: "flex-end" }}>
                         {navItems.map((page) => (
                             <Link key={page.label} href={page.path} passHref>
