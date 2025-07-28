@@ -17,6 +17,7 @@ import {
 import { orange } from "@mui/material/colors";
 import Image from "next/image";
 import React from "react";
+import AppToDashboardPortal from "../../layout/AppToDashboardPortal";
 
 const drawerWidth = 340;
 
@@ -119,7 +120,7 @@ const LeadListsPermanent: React.FC<LeadListsPermanentProps> = ({
                     )}
                 </List>
 
-                <Box className="mt-auto p-4">
+                <Box className="mt-auto p-4 flex flex-wrap">
                     <Button
                         fullWidth
                         variant="contained"

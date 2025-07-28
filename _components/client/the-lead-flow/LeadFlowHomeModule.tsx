@@ -11,6 +11,7 @@ import LeadListsPermanent from "./lead-lists/LeadsListPermanent";
 import { InteractionSummary, summarizeInteractions } from "@/_utility/helpers/interaction-summary.helper";
 import { Button } from "@mui/material";
 import { signOut } from "next-auth/react";
+import AppToDashboardPortal from "../layout/AppToDashboardPortal";
 
 /**
  * LeadFlowHomeModule
@@ -125,15 +126,16 @@ const LeadFlowHomeModule: React.FC = () => {
                         onAddNewList={handleAddNewList}
                         onMenuClick={handleDrawerToggle}
                     />
-                    <div className="ml-auto mr-6 mt-6">
+                    <div className="ml-auto mr-6 mt-6 flex gap-5">
                         <Button
                             color="error"
                             variant="contained"
                             onClick={() => signOut({ callbackUrl: "/login" })}
-                            sx={{ borderRadius: 8 }}
+                            sx={{ borderRadius: "34px" }}
                         >
                             Sign Out
                         </Button>
+                        <AppToDashboardPortal />
                     </div>
 
 

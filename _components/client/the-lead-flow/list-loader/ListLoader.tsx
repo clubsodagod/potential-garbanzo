@@ -103,7 +103,7 @@ const ListLoader: React.FC<ListLoaderProps> = ({ refreshLists }) => {
         <div className="border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition relative">
             {/* Name input */}
             <div className="mb-4 text-left">
-                <label htmlFor="list-name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="list-name" className="block text-sm font-medium text-[#fafafa] mb-1">
                     List Name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -112,7 +112,7 @@ const ListLoader: React.FC<ListLoaderProps> = ({ refreshLists }) => {
                     placeholder="e.g. Detroit Preforeclosures - July"
                     value={name ?? ""}
                     onChange={(e) => setName(e.target.value)}
-                    className={`w-full px-4 py-2 border rounded-md text-sm ${nameError ? "border-red-500" : "border-gray-300"
+                    className={`w-full px-4 py-2 border rounded-md text-[#fafafa] text-sm ${nameError ? "border-red-500" : "border-gray-300"
                         }`}
                     disabled={loading}
                 />
@@ -151,7 +151,7 @@ const ListLoader: React.FC<ListLoaderProps> = ({ refreshLists }) => {
                         </button>
                     </div>
                 ) : (
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-[#fafafa] text-sm">
                         Drag and drop your Excel file here, or{" "}
                         <span className="text-blue-600 underline">click to upload</span>.
                     </p>

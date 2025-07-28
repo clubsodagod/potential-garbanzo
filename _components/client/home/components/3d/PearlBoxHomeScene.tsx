@@ -27,8 +27,8 @@ export default function SceneWrapper() {
             <EffectComposer>
                 <Bloom
                     luminanceThreshold={0.2}
-                    luminanceSmoothing={0.025}
-                    intensity={0.25}
+                    luminanceSmoothing={0.25}
+                    intensity={0.15}
                     kernelSize={KernelSize.LARGE}
                 />
             </EffectComposer>

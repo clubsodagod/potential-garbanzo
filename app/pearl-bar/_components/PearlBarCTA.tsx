@@ -18,9 +18,9 @@ const PearlBarCTA: React.FC = () => (
             <Button LinkComponent={Link} variant="outlined" size="large" href="#tools">
                 Browse the Pearl Bar
             </Button>
-            <Button LinkComponent={Link} id="alt" variant="outlined" size="large" href="/contact">
+            {/* <Button LinkComponent={Link} id="alt" variant="outlined" size="large" href="/contact">
                 Consultation
-            </Button>
+            </Button> */}
         </Stack>
     </Box>
 );

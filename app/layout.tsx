@@ -5,6 +5,7 @@ import ProvidersWrapper from "@/_components/client/layout/ProvidersWrapper";
 import { appName } from "@/_library/const/brand-assets";
 import Head from "next/head";
 import PearlBoxGlobalNav from "@/_components/client/layout/navbar/PealBoxGlobalNav";
+import GlassFooter from "@/_components/client/layout/footer/Footer";
 
 const geistSans = MuseoModerno({
   variable: "--font-geist-sans",
@@ -45,6 +46,7 @@ export default function RootLayout({
         <ProvidersWrapper>
           <PearlBoxGlobalNav />
           {children}
+          <GlassFooter />
         </ProvidersWrapper>
 
       </body>

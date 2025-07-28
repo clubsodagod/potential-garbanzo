@@ -50,10 +50,10 @@ export const ModelWrapper: React.FC<ModelWrapperProps> = ({ children }) => {
         }
 
         // Phase 3: exit center → right (scroll: 1/3 to 5/6)
-        else if (scrollProgress > 3/4) {
+        else if (scrollProgress <= 1) {
             const t = (scrollProgress - 1 / 3) / (0.5); // normalize range from 1/3 to 5/6
 
-            targetX = THREE.MathUtils.lerp(0, 25, t);
+            targetX = THREE.MathUtils.lerp(0, 35, t);
             targetRotationY = THREE.MathUtils.lerp(0, Math.PI / 4, t); // optional rotation
             targetScale = THREE.MathUtils.lerp(1, 0.01, t);
         }

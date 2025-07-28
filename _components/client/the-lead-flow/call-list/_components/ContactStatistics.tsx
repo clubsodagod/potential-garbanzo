@@ -34,7 +34,7 @@ const ContactStatistics: React.FC<ContactStatisticsProps> = ({ summary }) => {
     return (
         <Box my={4} 
         >
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" color="#fafafa" gutterBottom>
                 📊 Lead Interaction Summary
             </Typography>
             <Grid container spacing={2}>

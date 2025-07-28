@@ -62,7 +62,7 @@ const CallList: React.FC<CallListProps> = ({ callList, isLoading, summary }) => 
 
                             <ContactStatistics summary={computedSummary} />
 
-                            <Typography variant="h6" className="pt-5 pb-10">
+                            <Typography variant="h6" className="pt-5 pb-10" color="#fafafa">
                                 {callList.name} — {callList.leadIds?.length ?? 0} leads
                             </Typography>
 

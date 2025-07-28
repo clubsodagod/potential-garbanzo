@@ -34,13 +34,13 @@ const RegisterForm: React.FC = () => {
         getValues
     } = useForm<IUserForm>({
         defaultValues: {
-            firstName: "Maliek",
-            lastName: "Davis",
-            username: "maliekdavis2",
-            email: "maliekjdavis24@gmail.com",
-            confirmEmail: "maliekjdavis24@gmail.com",
-            password: "Password123!!",
-            confirmPassword: "Password123!!",
+            firstName: "",
+            lastName: "",
+            username: "",
+            email: "",
+            confirmEmail: "",
+            password: "",
+            confirmPassword: "",
             role:"partner",
         },
         mode: "onChange",

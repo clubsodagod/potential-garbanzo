@@ -30,29 +30,30 @@ body {
 @keyframes glowPulse {
   0% {
     text-shadow:
+      0 0 1 #FF5CFF,
+      0 0 5px #7BFFFF,
+      0 0 9px #5C58FF,
+      0 0 13px #FFD5FF,
+      0 0 17px #923B66;
+  }
+
+
+  50% {
+    text-shadow:
       0 0 6px #FF5CFF,
       0 0 10px #7BFFFF,
       0 0 14px #5C58FF,
       0 0 18px #FFD5FF,
       0 0 22px #923B66;
-  }
-
-  50% {
-    text-shadow:
-      0 0 10px #FF5CFF,
-      0 0 14px #7BFFFF,
-      0 0 18px #5C58FF,
-      0 0 22px #FFD5FF,
-      0 0 26px #923B66;
   }
 
   100% {
     text-shadow:
-      0 0 6px #FF5CFF,
-      0 0 10px #7BFFFF,
-      0 0 14px #5C58FF,
-      0 0 18px #FFD5FF,
-      0 0 22px #923B66;
+      0 0 3px #FF5CFF,
+      0 0 7px #7BFFFF,
+      0 0 11px #5C58FF,
+      0 0 15px #FFD5FF,
+      0 0 19px #923B66;
   }
 }
 

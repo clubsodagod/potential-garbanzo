@@ -60,7 +60,7 @@ function PearlBoxGlobalNav() {
                                     textDecoration: "none",
                                 }}
                             >
-                                Pearl Box & Co
+                                Pearl Box
                             </Typography>
                         </Box>
                     </Link>
