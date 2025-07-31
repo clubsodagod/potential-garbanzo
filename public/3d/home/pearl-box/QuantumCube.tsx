@@ -9,10 +9,11 @@ Title: Quantum Cube
 */
 
 import * as THREE from 'three'
-import React, { JSX } from 'react'
-import { useGLTF, useAnimations } from '@react-three/drei'
+import React, { useRef, useMemo, JSX } from 'react'
+import { useGLTF, useAnimations, MeshWobbleMaterial } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 import { useFrame } from '@react-three/fiber'
+import { DissolveMaterial } from '@/_components/client/home/components/3d/DissolveMaterial'
 
 type ActionName = 'Animation'
 
@@ -44,22 +45,102 @@ type GLTFResult = GLTF & {
   animations: GLTFAction[]
 }
 
-export default function QuantumCube(props: JSX.IntrinsicElements['group']) {
-  const group = React.useRef<THREE.Group>(null)
-  const { nodes, materials, animations } = useGLTF('/3d/home/pearl-box/quantum_cube-transformed.glb') as unknown as GLTFResult
-  const { actions } = useAnimations(animations, group)
-  useFrame(()=> {
+interface QuantumCubeProps {
+  /**
+   * Optional children to render inside the cube group.
+   */
+  z: boolean;
+  onFadeOut:()=>void;
+  props: JSX.IntrinsicElements['group'];
+  children?: React.ReactNode;
+}
+
+/**
+ * QuantumCube
+ *
+ * A 3D animated cube using GLTF, Drei, and custom wobble/scale/position animations.
+ * Allows custom children to be nested within the cube's scene graph.
+ *
+ * @param {QuantumCubeProps} props - Props including children and native group props
+ * @returns {JSX.Element} The rendered animated cube with optional nested children
+ */
+export default function QuantumCube({ children,onFadeOut, z, ...props }: QuantumCubeProps): JSX.Element {
+  const groupRef = useRef<THREE.Group>(null)
+  const wobbleRef = useRef<THREE.Mesh>(null)
+
+  const { nodes, materials, animations } = useGLTF(
+    '/3d/home/pearl-box/quantum_cube-transformed.glb'
+  ) as unknown as GLTFResult
+
+  const { actions } = useAnimations(animations, groupRef)
+
+  // Play animation on mount
+  useFrame(() => {
     if (actions.Animation) {
       actions.Animation.play()
     }
   })
+
+  // Wobble animation
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime()
+    if (wobbleRef.current) {
+      const scaleWobble = 0.1715
+      const positionWobble = 0.25
+      wobbleRef.current.scale.set(
+        0.751 + Math.sin(t * 1.5) * scaleWobble,
+        0.751 + Math.cos(t * 1.75) * scaleWobble,
+        0.751 + Math.sin(t * 1.2) * scaleWobble
+      )
+      wobbleRef.current.position.set(
+        Math.sin(t * 0.3) * positionWobble,
+        Math.sin(t * 0.3) * positionWobble,
+        Math.cos(t * 0.1) * positionWobble
+      )
+    }
+  })
+
+  // Optional custom chrome material (unused currently, but ready to assign)
+  const chromeMaterial = useMemo(() => {
+    return new THREE.MeshPhysicalMaterial({
+      metalness: 1,
+      roughness: 0.1,
+      envMapIntensity: 1,
+      reflectivity: 1,
+      clearcoat: 1,
+      clearcoatRoughness: 0,
+      color: new THREE.Color(0xeeeeee),
+    })
+  }, [])
+
+const baseMat1 = useMemo(() => {
+  return new THREE.MeshStandardMaterial({
+    color: 'silver',
+    metalness: 1,
+    roughness: 0,
+  });
+}, []);
+
+
   return (
-    <group ref={group} {...props} dispose={null}>
+    <group ref={wobbleRef} dispose={null} {...props}>
       <group name="Sketchfab_Scene">
         <group name="GLTF_SceneRootNode">
-          {/* <group name="Sphere_0" scale={1.366}>
-          </group> */}
-            <mesh name="Object_4" geometry={nodes.Object_4.geometry} material={materials.color} />
+
+          <mesh visible={z}  name="Object_4" geometry={nodes.Object_4.geometry}>
+            <DissolveMaterial
+              baseMaterial={baseMat1}
+              visible={z}
+              onFadeOut={onFadeOut}
+              color="#eb5a13"
+            />
+          </mesh>
+
+          <group position={[0,-5,0]}>
+            {children}
+          </group>
+
+
           <group name="Cube002_2" scale={5.653}>
             <mesh name="Object_8" geometry={nodes.Object_8.geometry} material={materials.PaletteMaterial002} />
           </group>
@@ -90,9 +171,23 @@ export default function QuantumCube(props: JSX.IntrinsicElements['group']) {
           <group name="Cube010_11" scale={5.653}>
             <mesh name="Object_26" geometry={nodes.Object_26.geometry} material={materials.PaletteMaterial002} />
           </group>
+
+          {/* <group scale={5.653}>
+            <mesh geometry={nodes.Object_12.geometry} material={materials.PaletteMaterial003} />
+          </group> */}
         </group>
-        <mesh name="Object_6" geometry={nodes.Object_6.geometry} material={materials.PaletteMaterial001} rotation={[-Math.PI, 0, 0]} scale={[-0.147, 0.147, 0.147]} />
+
+        <mesh
+          name="Object_6"
+          geometry={nodes.Object_6.geometry}
+          material={materials.PaletteMaterial001}
+          rotation={[-Math.PI, 0, 0]}
+          scale={[-0.147, 0.147, 0.147]}
+        />
       </group>
+
+
+
     </group>
   )
 }

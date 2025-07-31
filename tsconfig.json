@@ -22,7 +22,7 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "_utility/helpers/patch-shader.-helper.js"],
   "exclude": ["node_modules"],
   "typeRoots": ["./types", "./node_modules/@types"]
 }

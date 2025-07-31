@@ -1,7 +1,7 @@
 
 
 
-export const appName:string = "Lead Flow";
+export const appName:string = "Pearl Box";
 
 export const pearlBoxLogoMain:string = "https://res.cloudinary.com/dyfhsjtwo/image/upload/v1753478226/Untitled_design_3_lk8scr.webp";
 

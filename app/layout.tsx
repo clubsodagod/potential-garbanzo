@@ -21,7 +21,7 @@ const geistMono = Exo_2({
 
 export const metadata: Metadata = {
   title: `${appName}`,
-  description: "The Lead Flow",
+  description: "Pearl Box",
 };
 
 export default function RootLayout({

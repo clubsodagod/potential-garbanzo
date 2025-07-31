@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   publicRuntimeConfig: {
-    APP_NAME: "The Lead Flow",
+    APP_NAME: "Pearl Box",
     API_DEVELOPMENT: "http://localhost:3000/api",
     API_PRODUCTION: "https://pearlbox.co/api",
     PRODUCTION: false,

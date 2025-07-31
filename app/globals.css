@@ -25,6 +25,7 @@ body {
   background: #232323;
   color: var(--foreground);
   min-height: 100dvh;
+  overflow-x: hidden;
 }
 
 @keyframes glowPulse {
