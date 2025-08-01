@@ -20,8 +20,48 @@ const geistMono = Exo_2({
 });
 
 export const metadata: Metadata = {
-  title: `${appName}`,
-  description: "Pearl Box",
+  title: `${appName} | AI-Powered SaaS for Intuitive Innovation & Business Automation`,
+  description:
+    "Pearl Box delivers AI-powered SaaS solutions that simplify complexity and fuel creative innovation. We build intuitive, intelligent systems that optimize workflows, automate growth, and empower modern businesses.",
+  keywords: [
+    "Pearl Box",
+    "AI SaaS platform",
+    "intuitive automation",
+    "business optimization",
+    "workflow simplification",
+    "creative software solutions",
+    "innovative tech tools",
+    "intelligent systems",
+    "business automation platform",
+    "tech for startups",
+    "AI-powered tools",
+    "scalable software",
+    "digital transformation",
+  ],
+  openGraph: {
+    title: `${appName} | AI-Powered SaaS for Intuitive Innovation & Business Automation`,
+    description:
+      "Unlock intuitive innovation with Pearl Box—AI-powered SaaS that simplifies complexity, automates operations, and inspires creative growth.",
+    type: "website",
+    url: "https://www.pearlbox.co",
+    siteName: "Pearl Box",
+    images: [
+      {
+        url: "/images/social-preview.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Pearl Box | Simplify. Automate. Innovate.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${appName} | Simplify. Automate. Innovate.`,
+    description:
+      "Pearl Box is the AI-powered SaaS platform built for intuitive innovation. Eliminate complexity. Empower creativity. Grow intelligently.",
+    // images: ["/images/social-preview.jpg"],
+  },
+  metadataBase: new URL("https://www.pearlbox.co"),
 };
 
 export default function RootLayout({
@@ -31,7 +71,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-
       <Head>
         <link
           rel="preload"

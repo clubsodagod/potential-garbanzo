@@ -47,7 +47,7 @@ export const ModelWrapper: React.FC<ModelWrapperProps> = ({ children, itemDispla
         if (scrollProgress < 1 / 6) {
     setItemDisplayed('sphere');
             const t = scrollProgress / (1 / 6);
-            targetX = THREE.MathUtils.lerp(5, -60, t);
+            targetX = THREE.MathUtils.lerp(10, -30, t);
             targetRotationY = THREE.MathUtils.lerp(0, -Math.PI / 4, t);
             targetScale = THREE.MathUtils.lerp(1, 0.8, t);
         }
@@ -56,7 +56,7 @@ export const ModelWrapper: React.FC<ModelWrapperProps> = ({ children, itemDispla
         else if (scrollProgress < 1 / 3) {
     setItemDisplayed('rocket-ship');
             const t = (scrollProgress - 1 / 6) / (1 / 6);
-            targetX = THREE.MathUtils.lerp(-60, 0, t);
+            targetX = THREE.MathUtils.lerp(-30, 10, t);
             targetRotationY = THREE.MathUtils.lerp(-Math.PI / 4, 0, t);
             targetScale = THREE.MathUtils.lerp(0.8, 1, t);
         }
@@ -66,7 +66,7 @@ export const ModelWrapper: React.FC<ModelWrapperProps> = ({ children, itemDispla
     setItemDisplayed('gear');
             const t = (scrollProgress - 1 / 3) / (0.66); // normalize range from 1/3 to 43/100
 
-            targetX = THREE.MathUtils.lerp(0, 30, t);
+            targetX = THREE.MathUtils.lerp(15, 30, t);
             targetRotationY = THREE.MathUtils.lerp(0, Math.PI / 2, t); // optional rotation
             targetScale = THREE.MathUtils.lerp(1, 0.01, t);
         }
@@ -76,7 +76,7 @@ export const ModelWrapper: React.FC<ModelWrapperProps> = ({ children, itemDispla
             // lightbulb
             const t = (scrollProgress - 43 / 100) / (0.55); // normalize range from 1/3 to 5/6
 
-            targetX = THREE.MathUtils.lerp(0, 0, t);
+            targetX = THREE.MathUtils.lerp(15, 0, t);
             targetY = THREE.MathUtils.lerp(0, -10, t);
             targetRotationY = THREE.MathUtils.lerp(0, Math.PI / 4, t); // optional rotation
             targetScale = THREE.MathUtils.lerp(1, 0.01, t);
@@ -88,7 +88,7 @@ export const ModelWrapper: React.FC<ModelWrapperProps> = ({ children, itemDispla
     setItemDisplayed('light-bulb');
             const t = (scrollProgress - 43 / 100) / (0.55); // normalize range from 1/3 to 5/6
 
-            targetX = THREE.MathUtils.lerp(0, -50, t);
+            targetX = THREE.MathUtils.lerp(0, -2, t);
             targetY = THREE.MathUtils.lerp(-10, -20, t);
             targetRotationY = THREE.MathUtils.lerp(0, Math.PI / 4, t); // optional rotation
             targetScale = THREE.MathUtils.lerp(2, 0.01, t);
@@ -99,16 +99,16 @@ export const ModelWrapper: React.FC<ModelWrapperProps> = ({ children, itemDispla
             // sphere
             const t = (scrollProgress - 33 / 100) / (0.88); // normalize range from 1/3 to 5/6
 
-            targetX = THREE.MathUtils.lerp(-20, 0, t);
+            targetX = THREE.MathUtils.lerp(-3, -10, t);
             targetY = THREE.MathUtils.lerp(0, 0, t);
             targetRotationY = THREE.MathUtils.lerp(0, Math.PI / 4, t); // optional rotation
             targetScale = THREE.MathUtils.lerp(2, 0.01, t);
         }
         else if (scrollProgress > 4 / 5) {
-    setItemDisplayed('sphere');
-            const t = (scrollProgress - 33 / 100) / (0.88); // normalize range from 1/3 to 5/6
+    setItemDisplayed('rocket-ship');
+            const t = (scrollProgress - 33 / 100) / (0.9); // normalize range from 1/3 to 5/6
 
-            targetX = THREE.MathUtils.lerp(-100, 0, t);
+            targetX = THREE.MathUtils.lerp(-10, -20, t);
             targetY = THREE.MathUtils.lerp(0, 3, t);
             targetRotationY = THREE.MathUtils.lerp(0, Math.PI / 4, t); // optional rotation
             targetScale = THREE.MathUtils.lerp(3, 0.01, t);

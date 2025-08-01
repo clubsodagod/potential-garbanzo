@@ -17,9 +17,9 @@ const PearlBarHero: React.FC = () => (
             <Button variant="outlined" size="large" component={Link} href="#tools">
                 Explore the Tools
             </Button>
-            <Button id="alt" variant="outlined" size="large" component={Link} href="#results">
+            {/* <Button id="alt" variant="outlined" size="large" component={Link} href="#results">
                 See Real Results
-            </Button>
+            </Button> */}
         </Stack>
     </Box>
 );

@@ -46,7 +46,6 @@ export default function RocketShip(props: any) {
   const group = React.useRef<THREE.Group>(null)
   const { nodes, materials, animations } = useGLTF('/3d/home/rocket-ship/RocketShip-transformed.glb') as unknown as GLTFResult
   const { actions } = useAnimations(animations, group);
-  console.log(props.onFadeOut);
 
 
 const baseMat1 = useDissolveBaseMaterial();

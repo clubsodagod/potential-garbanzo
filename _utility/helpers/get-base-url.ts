@@ -24,7 +24,7 @@ export function getBaseApiUrl(): string | undefined {
  * @returns {string | undefined} - Environment-specific frontend URL.
  */
 export function getBaseUrl(): string | undefined {
-    const env = process.env.NODE_ENV || "development";
+    const env = process.env.NODE_ENV || "production";
 
     switch (env) {
         case "development":
