@@ -123,8 +123,8 @@ const baseMat1 = useMemo(() => {
 
 
   return (
-    <group ref={wobbleRef} dispose={null} {...props}>
-      <group name="Sketchfab_Scene">
+    <group ref={groupRef} dispose={null} {...props}>
+      <group ref={wobbleRef} name="Sketchfab_Scene">
         <group name="GLTF_SceneRootNode">
 
           <mesh visible={z}  name="Object_4" geometry={nodes.Object_4.geometry}>
