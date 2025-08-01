@@ -41,6 +41,7 @@ const PrioritizedTasksModule: React.FC<PrioritizedTasksModuleProps> = ({
     refresh,
 }) => {
     const { task } = useTaskContext();
+console.log(tasks);
 
     const [statusFilter, setStatusFilter] = useState<TaskStatus | "all">("all");
     const [typeFilter, setTypeFilter] = useState<TaskType | "all">("all");
@@ -77,6 +78,8 @@ const PrioritizedTasksModule: React.FC<PrioritizedTasksModuleProps> = ({
 
     // Filtered tasks
     const visibleTasks = tasks.filter((t) => {
+        console.log(t);
+        
         const statusMatch = statusFilter === "all" || t.status === statusFilter;
         const typeMatch = typeFilter === "all" || t.type === typeFilter;
         return statusMatch && typeMatch;

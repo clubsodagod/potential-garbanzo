@@ -27,7 +27,8 @@ export default async function validateLogin(credentials: Credentials): Promise<U
             password: secret,
             hashedPassword: user.password,
         });
-
+        console.log("Password match result:", isMatch);
+        
         if (!isMatch) {
             throw new Error("Incorrect password. Please try again.");
         }

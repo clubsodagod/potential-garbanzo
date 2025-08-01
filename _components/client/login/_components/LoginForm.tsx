@@ -68,6 +68,9 @@ const LoginForm: React.FC = () => {
                 secret: data.secret,
             });
 
+            console.log("Login response:", res);
+            
+
             setLoading(false);
 
             if (res?.error) {
