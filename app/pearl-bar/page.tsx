@@ -54,7 +54,7 @@ export const metadata:Metadata = {
         siteName: "Pearl Box",
         images: [
             {
-                url: "/images/pearlbar-preview.jpg",
+                url: "https://res.cloudinary.com/dyfhsjtwo/image/upload/v1753478226/Untitled_design_3_lk8scr.webp",
                 width: 1200,
                 height: 630,
                 alt: "Pearl Bar | AI SaaS Suite by Pearl Box",
@@ -67,6 +67,6 @@ export const metadata:Metadata = {
         title: "Pearl Bar by Pearl Box",
         description:
             "Turn complexity into clarity with Pearl Bar — a powerful SaaS suite for business innovation and automation.",
-        // images: ["/images/pearlbar-preview.jpg"],
+        images: ["https://res.cloudinary.com/dyfhsjtwo/image/upload/v1753478226/Untitled_design_3_lk8scr.webp"],
     },
 };

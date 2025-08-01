@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     siteName: "Pearl Box",
     images: [
       {
-        url: "/images/social-preview.jpg",
+        url: "https://res.cloudinary.com/dyfhsjtwo/image/upload/v1753478226/Untitled_design_3_lk8scr.webp",
         width: 1200,
         height: 630,
         alt: "Pearl Box | Simplify. Automate. Innovate.",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     title: `${appName} | Simplify. Automate. Innovate.`,
     description:
       "Pearl Box is the AI-powered SaaS platform built for intuitive innovation. Eliminate complexity. Empower creativity. Grow intelligently.",
-    // images: ["/images/social-preview.jpg"],
+    images: ["https://res.cloudinary.com/dyfhsjtwo/image/upload/v1753478226/Untitled_design_3_lk8scr.webp"],
   },
   metadataBase: new URL("https://www.pearlbox.co"),
 };
