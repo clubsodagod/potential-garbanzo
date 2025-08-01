@@ -15,7 +15,7 @@ export default async function validateLogin(credentials: Credentials): Promise<U
         const { credential, secret } = credentials;
 
         const isEmail = credential.includes("@");
-        const user = await UserModel.findOne(isEmail ? { email: credential } : { username: credential });
+        const user = await UserModel.findOne(isEmail ? { email: credential } : { username: credential }).populate("tasks");
 
         if (!user) {
             throw new Error(
@@ -27,7 +27,6 @@ export default async function validateLogin(credentials: Credentials): Promise<U
             password: secret,
             hashedPassword: user.password,
         });
-        console.log("Password match result:", isMatch);
         
         if (!isMatch) {
             throw new Error("Incorrect password. Please try again.");

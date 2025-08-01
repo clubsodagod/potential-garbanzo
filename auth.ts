@@ -36,7 +36,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 }
 
                 // Ensure the returned value matches UserType
-                return user as unknown as UserType;
+                return serializeUser(user) as unknown as UserType;
             }
         })
     ],
@@ -44,7 +44,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     callbacks: {
         async jwt({ token, user }) {// Add the user properties to the token after signing in
             if (user) {
-                console.log("JWT callback user:", user);
                 
                 token._id = user._id;
                 token.firstName = user.firstName;

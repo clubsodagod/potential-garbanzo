@@ -11,7 +11,6 @@ export default async function credentialUserLogin(password: string, credential: 
     try {
         const credentials = { credential, secret: password };
         const user = await validateLogin(credentials);
-        console.log("User authenticated:", user);
         
         if (!user) {
             throw new Error("Login failed. Please check your credentials.");
