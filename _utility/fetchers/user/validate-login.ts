@@ -38,3 +38,32 @@ export default async function validateLogin(credentials: Credentials): Promise<U
         return null;
     }
 }
+export async function validateLoginAuth(credentials: Credentials): Promise<UserType | null> {
+    try {
+        await connectToDB();
+        const { credential, secret } = credentials;
+
+        const isEmail = credential.includes("@");
+        const user = await UserModel.findOne(isEmail ? { email: credential } : { username: credential });
+
+        if (!user) {
+            throw new Error(
+                `No user found with that ${isEmail ? "email" : "username"}.`
+            );
+        }
+
+        const isMatch = await isAPasswordMatch({
+            password: secret,
+            hashedPassword: user.password,
+        });
+        
+        if (!isMatch) {
+            throw new Error("Incorrect password. Please try again.");
+        }
+
+        return user.depopulate("password") as UserType;
+    } catch (error) {
+        console.error("validateLogin error:", error);
+        return null;
+    }
+}

@@ -66,7 +66,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         async session({ session, token }: { session: Session; token: JWT }) {
             // Create a user object with token properties
             const userObject = {
-                _id: token._id,
+                _id: token._id.toString(),
                 firstName: token.firstName,
                 lastName: token.lastName,
                 username: token.username,

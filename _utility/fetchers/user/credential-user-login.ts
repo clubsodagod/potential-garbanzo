@@ -1,4 +1,4 @@
-import validateLogin from "./validate-login";
+import validateLogin, { validateLoginAuth } from "./validate-login";
 
 /**
  * Attempts to authenticate a user based on credential (email/username) and password.
@@ -10,7 +10,7 @@ import validateLogin from "./validate-login";
 export default async function credentialUserLogin(password: string, credential: string) {
     try {
         const credentials = { credential, secret: password };
-        const user = await validateLogin(credentials);
+        const user = await validateLoginAuth(credentials);
         
         if (!user) {
             throw new Error("Login failed. Please check your credentials.");
