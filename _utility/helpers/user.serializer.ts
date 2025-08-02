@@ -25,6 +25,7 @@ export async function serializeUser(user: any): Promise<Record<string, any>> {
         username: user.username,
         email: user.email,
         emailVerified: user.emailVerified,
+        accountApproved: user.accountApproved,
         avatar: user.avatar,
         role: user.role,
 

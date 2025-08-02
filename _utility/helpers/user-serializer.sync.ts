@@ -26,6 +26,7 @@ export function serializeUserSync(user: any): Record<string, any> {
         username: user.username,
         email: user.email,
         emailVerified: user.emailVerified,
+        accountApproved: user.accountApproved,
         avatar: user.avatar,
         role: user.role,
 

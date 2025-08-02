@@ -3,10 +3,8 @@ import NextAuth, { Session } from "next-auth"
 import Google from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials";
 import { JWT } from "next-auth/jwt";
-import { AdapterUser } from "next-auth/adapters";
 import { UserType } from "./_library/types-interfaces-classes/user";
 import credentialUserLogin from "./_utility/fetchers/user/credential-user-login";
-import { serializeUser } from "./_utility/helpers/user.serializer";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
@@ -34,9 +32,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 if (!user) {
                     throw new Error('Something went wrong with the login attempt. Please try again.')
                 }
-
+                console.log("user", user);
+                
                 // Ensure the returned value matches UserType
-                return serializeUser(user) as unknown as UserType;
+                return user as unknown as UserType;
             }
         })
     ],
@@ -50,7 +49,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 token.lastName = user.lastName;
                 token.username = user.username;
                 token.email = user.email;
-                token.verifiedEmail = user.verifiedEmail as boolean;
+                token.emailVerified = user.emailVerified as boolean;
                 token.avatar = user.avatar;
 
                 // Role and account-related metadata
@@ -72,7 +71,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 lastName: token.lastName,
                 username: token.username,
                 email: token.email as string,
-                verifiedEmail: token.verifiedEmail as boolean,
+                emailVerified: token.emailVerified as boolean,
+                accountApproved: token.accountApproved as boolean,
                 avatar: token.avatar,
 
                 // Role and account-related metadata
@@ -84,7 +84,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
 
             // Add the user object to the session
-            session.user = userObject as unknown as AdapterUser;
+            session.user = userObject as unknown as Session["user"] ;
             console.log(session);
 
             return session;
@@ -102,11 +102,7 @@ declare module "next-auth" {
         error?: "RefreshTokenError"
     }
 }
-declare module "next-auth" {
-    interface AdapterUser extends UserType {
-        error?: "RefreshTokenError";
-    }
-}
+
 
 declare module "next-auth/jwt" {
     interface JWT extends UserType { 
